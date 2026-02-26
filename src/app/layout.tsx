@@ -13,10 +13,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AV Toolbox | Production Calculator Suite",
+  title: {
+    default: "AV Toolbox | Free Production Tools for Streaming & Broadcast",
+    template: "%s | AV Toolbox",
+  },
   description:
-    "Free professional AV & streaming production tools. Bitrate calculator, stream delay, RTMP builder, lower thirds, and more.",
+    "Free production-grade calculators and utilities for live streaming, broadcast, and AV professionals. Bitrate calculator, stream delay, RTMP builder, lower thirds, and more.",
   keywords: [
+    "AV tools",
+    "streaming tools",
     "bitrate calculator",
     "stream delay calculator",
     "RTMP URL builder",
@@ -24,14 +29,26 @@ export const metadata: Metadata = {
     "aspect ratio calculator",
     "AV production tools",
     "live streaming tools",
-    "OBS bitrate",
+    "broadcast tools",
+    "OBS tools",
     "vMix tools",
   ],
   openGraph: {
-    title: "AV Toolbox | Production Calculator Suite",
+    title: "AV Toolbox | Free Production Tools for Streaming & Broadcast",
     description:
-      "Free professional AV & streaming production tools for live streaming and broadcast.",
+      "Free production-grade calculators and utilities for live streaming, broadcast, and AV professionals.",
     type: "website",
+    siteName: "AV Toolbox",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AV Toolbox | Free Production Tools for Streaming & Broadcast",
+    description:
+      "Free production-grade calculators and utilities for live streaming, broadcast, and AV professionals.",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -41,9 +58,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased noise-bg`}
+        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
         {children}
       </body>

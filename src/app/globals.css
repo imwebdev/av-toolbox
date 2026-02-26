@@ -47,8 +47,36 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
+/* Light theme (default) - Stripe-inspired palette */
 :root {
   --radius: 0.75rem;
+  --background: #ffffff;
+  --foreground: #0a2540;
+  --card: #ffffff;
+  --card-foreground: #0a2540;
+  --popover: #ffffff;
+  --popover-foreground: #0a2540;
+  --primary: #635bff;
+  --primary-foreground: #ffffff;
+  --secondary: #f6f9fc;
+  --secondary-foreground: #0a2540;
+  --muted: #f6f9fc;
+  --muted-foreground: #425466;
+  --accent: #635bff;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --border: #e3e8ee;
+  --input: #e3e8ee;
+  --ring: #635bff;
+  --chart-1: #635bff;
+  --chart-2: #8b5cf6;
+  --chart-3: #f59e0b;
+  --chart-4: #10b981;
+  --chart-5: #ef4444;
+}
+
+/* Dark variant - used inside .dark containers for tool components */
+.dark {
   --background: #09090b;
   --foreground: #fafafa;
   --card: #111113;
@@ -67,11 +95,6 @@
   --border: #ffffff12;
   --input: #ffffff18;
   --ring: #06b6d4;
-  --chart-1: #06b6d4;
-  --chart-2: #8b5cf6;
-  --chart-3: #f59e0b;
-  --chart-4: #10b981;
-  --chart-5: #ef4444;
 }
 
 @layer base {
@@ -83,19 +106,19 @@
   }
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - light theme */
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: #f6f9fc;
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #c1c9d2;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #8792a2;
 }
 
 /* Smooth scroll */
@@ -103,7 +126,7 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Glow effect for active cards */
+/* Tool card glow effect (used within dark tool containers) */
 .tool-card-glow {
   position: relative;
 }
@@ -135,14 +158,9 @@ html {
   animation: result-pulse 0.6s ease-in-out;
 }
 
-/* Grid noise texture overlay */
-.noise-bg {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-}
-
-/* Input focus glow */
-input[type="number"]:focus,
-input[type="text"]:focus {
+/* Input focus glow - scoped to dark tool containers */
+.dark input[type="number"]:focus,
+.dark input[type="text"]:focus {
   box-shadow: 0 0 0 2px #06b6d430;
 }
 
@@ -154,4 +172,27 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+/* Stripe-inspired gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #635bff, #8b5cf6, #d946ef);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Section background accents */
+.section-alt {
+  background-color: #f6f9fc;
+}
+
+/* Tool directory card hover */
+.tool-directory-card {
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+.tool-directory-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06), 0 4px 8px rgba(0, 0, 0, 0.03);
 }
