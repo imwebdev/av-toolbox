@@ -1,268 +1,277 @@
-import { notFound } from "next/navigation";
-import Link from "next/link";
-import type { Metadata } from "next";
-import { Wrench, ArrowLeft, ArrowRight, ChevronRight } from "lucide-react";
-import { TOOLS, getToolBySlug } from "@/lib/tools-data";
+import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
+import Link from 'next/link';
+import { tools, getToolBySlug, getRelatedTools } from '@/lib/tools-data';
+import { getBlogPostsByTool } from '@/lib/blog-data';
+import { ToolCalculator } from '@/components/tool-calculators';
+import { ToolCard } from '@/components/tool-card';
+import { NewsletterSignup } from '@/components/newsletter-signup';
+import { ChevronRight, ArrowRight, BookOpen } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
-import StreamDelayCalculator from "@/components/tools/StreamDelayCalculator";
-import BitrateCalculator from "@/components/tools/BitrateCalculator";
-import SafeAreaOverlay from "@/components/tools/SafeAreaOverlay";
-import RtmpUrlBuilder from "@/components/tools/RtmpUrlBuilder";
-import CountdownGenerator from "@/components/tools/CountdownGenerator";
-import LowerThirdBuilder from "@/components/tools/LowerThirdBuilder";
-import AudioDelayCalculator from "@/components/tools/AudioDelayCalculator";
-import AspectRatioCalculator from "@/components/tools/AspectRatioCalculator";
-import CableLengthEstimator from "@/components/tools/CableLengthEstimator";
-import SpeakerCoverageCalculator from "@/components/tools/SpeakerCoverageCalculator";
-
-const TOOL_COMPONENTS: Record<string, React.ComponentType> = {
-  "stream-delay-calculator": StreamDelayCalculator,
-  "bitrate-calculator": BitrateCalculator,
-  "safe-area-overlay": SafeAreaOverlay,
-  "rtmp-url-builder": RtmpUrlBuilder,
-  "countdown-generator": CountdownGenerator,
-  "lower-third-builder": LowerThirdBuilder,
-  "audio-delay-calculator": AudioDelayCalculator,
-  "aspect-ratio-calculator": AspectRatioCalculator,
-  "cable-length-estimator": CableLengthEstimator,
-  "speaker-coverage-calculator": SpeakerCoverageCalculator,
-};
-
-export function generateStaticParams() {
-  return TOOLS.map((tool) => ({
-    slug: tool.slug,
-  }));
+function getIcon(iconName: string) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const icons = LucideIcons as any;
+  const Icon = icons[iconName];
+  return Icon || LucideIcons.Wrench;
 }
 
-type PageParams = { slug: string };
+export async function generateStaticParams() {
+  return tools.map(tool => ({ slug: tool.slug }));
+}
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<PageParams>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const tool = getToolBySlug(slug);
-
-  if (!tool) {
-    return { title: "Tool Not Found" };
-  }
+  if (!tool) return {};
 
   return {
-    title: tool.name,
+    title: `${tool.name} — Free Online ${tool.categoryLabel} Tool`,
     description: tool.description,
     keywords: tool.keywords,
     openGraph: {
       title: `${tool.name} | AV Toolbox`,
-      description: tool.description,
-      type: "website",
-      siteName: "AV Toolbox",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${tool.name} | AV Toolbox`,
-      description: tool.description,
+      description: tool.tagline,
+      type: 'website',
     },
   };
 }
 
-export default async function ToolPage({
-  params,
-}: {
-  params: Promise<PageParams>;
-}) {
+export default async function ToolPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const tool = getToolBySlug(slug);
+  if (!tool) notFound();
 
-  if (!tool) {
-    notFound();
-  }
+  const related = getRelatedTools(tool);
+  const articles = getBlogPostsByTool(tool.slug);
+  const Icon = getIcon(tool.icon);
 
-  const ToolComponent = TOOL_COMPONENTS[slug];
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: tool.name,
+    description: tool.description,
+    url: `https://avtoolbox.aibuildmastery.com/tools/${tool.slug}`,
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Any',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+  };
 
-  if (!ToolComponent) {
-    notFound();
-  }
-
-  const Icon = tool.icon;
-
-  // Get other tools for the "More tools" section, excluding the current one
-  const otherTools = TOOLS.filter((t) => t.slug !== slug).slice(0, 6);
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: tool.faq.map(item => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.a,
+      },
+    })),
+  };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-[#e3e8ee]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-3">
-              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#635bff]/10">
-                <Wrench className="w-4 h-4 text-[#635bff]" />
-              </div>
-              <div>
-                <span className="text-sm font-bold text-[#0a2540] tracking-tight">
-                  AV Toolbox
-                </span>
-              </div>
-            </Link>
-            <Link
-              href="/"
-              className="flex items-center gap-1.5 text-sm text-[#425466] hover:text-[#0a2540] transition-colors"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              All tools
-            </Link>
-          </div>
-        </div>
-      </header>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
-      {/* Breadcrumb */}
-      <div className="bg-[#f6f9fc] border-b border-[#e3e8ee]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3">
-          <nav className="flex items-center gap-1.5 text-sm text-[#425466]">
-            <Link
-              href="/"
-              className="hover:text-[#0a2540] transition-colors"
-            >
-              Home
-            </Link>
-            <ChevronRight className="w-3.5 h-3.5 text-[#8792a2]" />
-            <span className="text-[#8792a2]">Tools</span>
-            <ChevronRight className="w-3.5 h-3.5 text-[#8792a2]" />
-            <span className="text-[#0a2540] font-medium">{tool.name}</span>
-          </nav>
-        </div>
+      {/* Breadcrumbs */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <nav className="flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400">
+          <Link href="/" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Home</Link>
+          <ChevronRight className="w-3.5 h-3.5" />
+          <span>Tools</span>
+          <ChevronRight className="w-3.5 h-3.5" />
+          <span className="text-zinc-900 dark:text-white font-medium">{tool.name}</span>
+        </nav>
       </div>
 
-      {/* Tool Header */}
-      <section className="pt-10 pb-8">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="flex items-start gap-4">
-            <div
-              className={`flex items-center justify-center w-12 h-12 rounded-xl ${tool.accentBg} ${tool.accentColor} shrink-0`}
-            >
-              <Icon className="w-6 h-6" />
-            </div>
-            <div>
-              <span className="text-xs font-semibold uppercase tracking-wider text-[#425466]">
-                {tool.category}
-              </span>
-              <h1 className="text-2xl sm:text-3xl font-bold text-[#0a2540] tracking-tight mt-1">
-                {tool.name}
-              </h1>
-              <p className="mt-2 text-[#425466] max-w-2xl">
-                {tool.description}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 opacity-30 dark:opacity-20" style={{ background: `linear-gradient(135deg, ${tool.color}15 0%, transparent 60%)` }} />
 
-      {/* Tool Component - Dark container to preserve existing tool styling */}
-      <section className="pb-12">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="dark rounded-2xl bg-[#09090b] p-4 sm:p-6">
-            <ToolComponent />
-          </div>
-        </div>
-      </section>
-
-      {/* SEO Content / Long Description */}
-      <section className="pb-16 border-t border-[#e3e8ee]">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-12">
-          <h2 className="text-xl font-bold text-[#0a2540] mb-4">
-            About this tool
-          </h2>
-          <div className="text-[#425466] leading-relaxed space-y-4">
-            {tool.longDescription.split(". ").reduce<string[][]>(
-              (acc, sentence, i) => {
-                const paragraphIndex = Math.floor(i / 3);
-                if (!acc[paragraphIndex]) acc[paragraphIndex] = [];
-                acc[paragraphIndex].push(sentence);
-                return acc;
-              },
-              []
-            ).map((sentences, i) => (
-              <p key={i}>{sentences.join(". ")}{sentences[sentences.length - 1].endsWith(".") ? "" : "."}</p>
-            ))}
-          </div>
-
-          {/* Keywords as tags */}
-          <div className="mt-8 flex flex-wrap gap-2">
-            {tool.keywords.map((keyword) => (
-              <span
-                key={keyword}
-                className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-[#f6f9fc] text-[#425466] border border-[#e3e8ee]"
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16 pb-8 sm:pb-12">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-3 mb-6">
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center"
+                style={{ backgroundColor: `${tool.color}15` }}
               >
-                {keyword}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Other Tools */}
-      <section className="pb-20 bg-[#f6f9fc] border-t border-[#e3e8ee]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-bold text-[#0a2540]">More tools</h2>
-            <Link
-              href="/"
-              className="flex items-center gap-1 text-sm font-medium text-[#635bff] hover:text-[#4b45c6] transition-colors"
-            >
-              View all
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {otherTools.map((otherTool) => {
-              const OtherIcon = otherTool.icon;
-              return (
-                <Link
-                  key={otherTool.slug}
-                  href={`/tools/${otherTool.slug}`}
-                  className="group tool-directory-card block rounded-xl border border-[#e3e8ee] bg-white p-5"
-                >
-                  <div className="flex items-start gap-3">
-                    <div
-                      className={`flex items-center justify-center w-9 h-9 rounded-lg ${otherTool.accentBg} ${otherTool.accentColor} shrink-0`}
-                    >
-                      <OtherIcon className="w-4 h-4" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-semibold text-[#0a2540] group-hover:text-[#635bff] transition-colors">
-                        {otherTool.name}
-                      </h3>
-                      <p className="mt-1 text-xs text-[#425466] leading-relaxed line-clamp-2">
-                        {otherTool.description}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-[#e3e8ee] bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center w-7 h-7 rounded-md bg-[#635bff]/10">
-                <Wrench className="w-3.5 h-3.5 text-[#635bff]" />
+                <Icon className="w-6 h-6" style={{ color: tool.color }} />
               </div>
-              <span className="text-sm font-semibold text-[#0a2540]">
-                AV Toolbox
+              <span className="text-sm font-medium px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+                {tool.categoryLabel}
               </span>
             </div>
-            <p className="text-sm text-[#425466]">
-              Free production tools for streaming & broadcast professionals
+
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-white mb-4 leading-[1.1]">
+              {tool.name}
+            </h1>
+            <p className="text-lg text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-2xl">
+              {tool.tagline}
             </p>
           </div>
         </div>
-      </footer>
-    </div>
+      </section>
+
+      {/* Calculator */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16">
+        <ToolCalculator slug={tool.slug} tool={tool} />
+      </section>
+
+      {/* Ad slot */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+        <div className="rounded-xl border border-dashed border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900/50 p-4 text-center text-xs text-zinc-400 dark:text-zinc-500">
+          Advertisement
+        </div>
+      </div>
+
+      {/* How to Use */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 border-t border-zinc-200 dark:border-zinc-800">
+        <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white mb-10">
+          How to Use the {tool.name}
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {tool.howTo.map(step => (
+            <div key={step.step} className="relative">
+              <div className="text-5xl font-extrabold mb-4 leading-none" style={{ color: `${tool.color}25` }}>
+                {String(step.step).padStart(2, '0')}
+              </div>
+              <h3 className="text-base font-bold text-zinc-900 dark:text-white mb-2">
+                {step.title}
+              </h3>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                {step.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* About / Description */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 border-t border-zinc-200 dark:border-zinc-800">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div className="lg:col-span-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white mb-6">
+              About This Tool
+            </h2>
+            <p className="text-zinc-500 dark:text-zinc-400 leading-relaxed mb-6">
+              {tool.description}
+            </p>
+
+            <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-4">Key Features</h3>
+            <ul className="space-y-3 mb-8">
+              {tool.features.map((f, i) => (
+                <li key={i} className="flex items-start gap-3 text-zinc-500 dark:text-zinc-400">
+                  <div className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: tool.color }} />
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+
+            <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-4">Use Cases</h3>
+            <ul className="space-y-3">
+              {tool.useCases.map((u, i) => (
+                <li key={i} className="flex items-start gap-3 text-zinc-500 dark:text-zinc-400">
+                  <div className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0 bg-zinc-300 dark:bg-zinc-600" />
+                  <span>{u}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Keywords/Tags */}
+          <div>
+            <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-4">Related Topics</h3>
+            <div className="flex flex-wrap gap-2">
+              {tool.keywords.map(kw => (
+                <span key={kw} className="text-xs px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+                  {kw}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 border-t border-zinc-200 dark:border-zinc-800">
+        <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white mb-10">
+          Frequently Asked Questions
+        </h2>
+        <div className="max-w-3xl space-y-6">
+          {tool.faq.map((item, i) => (
+            <div key={i} className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6">
+              <h3 className="text-base font-bold text-zinc-900 dark:text-white mb-3">
+                {item.q}
+              </h3>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                {item.a}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Related Articles */}
+      {articles.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 border-t border-zinc-200 dark:border-zinc-800">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white">
+              Related Articles
+            </h2>
+            <Link href="/blog" className="flex items-center gap-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors">
+              View all
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {articles.map(post => (
+              <Link key={post.slug} href={`/blog/${post.slug}`} className="group block">
+                <article className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 transition-all duration-300 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-lg h-full flex flex-col">
+                  <div className="flex items-center gap-2 mb-3">
+                    <BookOpen className="w-4 h-4 text-blue-500" />
+                    <span className="text-xs text-zinc-400 dark:text-zinc-500">{post.readTime} read</span>
+                  </div>
+                  <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    {post.title}
+                  </h3>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed flex-1">
+                    {post.excerpt}
+                  </p>
+                  <div className="flex items-center gap-1.5 mt-4 text-sm font-medium text-blue-600 dark:text-blue-400">
+                    Read article
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </div>
+                </article>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Newsletter */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <NewsletterSignup />
+      </section>
+
+      {/* Related Tools */}
+      {related.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 border-t border-zinc-200 dark:border-zinc-800">
+          <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white mb-8">
+            Related Tools
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {related.map(t => (
+              <ToolCard key={t.slug} tool={t} />
+            ))}
+          </div>
+        </section>
+      )}
+    </>
   );
 }

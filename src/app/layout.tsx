@@ -1,50 +1,37 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Inter, JetBrains_Mono } from 'next/font/google';
+import { ThemeProvider } from '@/components/theme-provider';
+import { Navbar } from '@/components/navbar';
+import { Footer } from '@/components/footer';
+import './globals.css';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const jetbrains = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "AV Toolbox | Free Production Tools for Streaming & Broadcast",
-    template: "%s | AV Toolbox",
+    default: 'AV Toolbox | Free Production Tools for Streaming & Broadcast',
+    template: '%s | AV Toolbox',
   },
-  description:
-    "Free production-grade calculators and utilities for live streaming, broadcast, and AV professionals. Bitrate calculator, stream delay, RTMP builder, lower thirds, and more.",
-  keywords: [
-    "AV tools",
-    "streaming tools",
-    "bitrate calculator",
-    "stream delay calculator",
-    "RTMP URL builder",
-    "lower third generator",
-    "aspect ratio calculator",
-    "AV production tools",
-    "live streaming tools",
-    "broadcast tools",
-    "OBS tools",
-    "vMix tools",
-  ],
+  description: 'Free production-grade calculators and utilities for live streaming, broadcast, and AV professionals. Bitrate calculator, stream delay, safe areas, and more.',
+  keywords: ['AV tools', 'streaming calculator', 'broadcast tools', 'bitrate calculator', 'stream delay', 'live production', 'audio video'],
   openGraph: {
-    title: "AV Toolbox | Free Production Tools for Streaming & Broadcast",
-    description:
-      "Free production-grade calculators and utilities for live streaming, broadcast, and AV professionals.",
-    type: "website",
-    siteName: "AV Toolbox",
+    title: 'AV Toolbox | Free Production Tools for Streaming & Broadcast',
+    description: 'Free production-grade calculators and utilities for live streaming, broadcast, and AV professionals.',
+    type: 'website',
+    siteName: 'AV Toolbox',
   },
   twitter: {
-    card: "summary_large_image",
-    title: "AV Toolbox | Free Production Tools for Streaming & Broadcast",
-    description:
-      "Free production-grade calculators and utilities for live streaming, broadcast, and AV professionals.",
+    card: 'summary_large_image',
+    title: 'AV Toolbox | Free Production Tools',
+    description: 'Free production-grade calculators and utilities for AV professionals.',
   },
   robots: {
     index: true,
@@ -58,11 +45,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
-      >
-        {children}
+    <html lang="en" className={`${inter.variable} ${jetbrains.variable}`} suppressHydrationWarning>
+      <body className="antialiased bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 min-h-screen flex flex-col">
+        <ThemeProvider>
+          <Navbar />
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
