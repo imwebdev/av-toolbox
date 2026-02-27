@@ -30,23 +30,23 @@ export function ToolCard({ tool, variant = 'dark' }: { tool: Tool; variant?: 'da
           style={{ backgroundColor: tool.color }}
         />
 
-        <div className="p-6 sm:p-7 flex flex-col flex-1">
+        <div className="p-7 sm:p-8 lg:p-9 flex flex-col flex-1">
           {/* Icon with colored background */}
           <div
-            className="mb-5 w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+            className="mb-6 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
             style={{
               backgroundColor: `${tool.color}15`,
             }}
           >
             <Icon
-              className="w-5 h-5 transition-colors duration-300"
+              className="w-5.5 h-5.5 transition-colors duration-300"
               style={{ color: tool.color }}
               strokeWidth={1.75}
             />
           </div>
 
           {/* Title */}
-          <h3 className={`text-[15px] font-semibold mb-2 leading-snug transition-colors duration-200 ${
+          <h3 className={`text-base font-semibold mb-2.5 leading-snug transition-colors duration-200 ${
             isDark
               ? 'text-[#f0ece8] group-hover:text-white'
               : 'text-[#141414]'
@@ -55,7 +55,7 @@ export function ToolCard({ tool, variant = 'dark' }: { tool: Tool; variant?: 'da
           </h3>
 
           {/* Description */}
-          <p className={`text-[13px] leading-relaxed line-clamp-2 mb-6 flex-1 ${
+          <p className={`text-[13px] leading-relaxed line-clamp-2 mb-8 flex-1 ${
             isDark ? 'text-[#7a756f]' : 'text-[#6a6560]'
           }`}>
             {tool.tagline}

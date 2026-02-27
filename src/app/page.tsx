@@ -114,7 +114,7 @@ export default function Home() {
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-7">
                 {catTools.map(tool => (
                   <ToolCard key={tool.slug} tool={tool} variant={isLight ? 'light' : 'dark'} />
                 ))}
@@ -153,14 +153,14 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-7">
             {recentPosts.map(post => (
               <Link key={post.slug} href={`/blog/${post.slug}`} className="group block h-full">
                 <article className="relative overflow-hidden rounded-2xl border border-[#232323] bg-[#141414] transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-black/40 group-hover:border-[#383838] h-full flex flex-col">
                   {/* Color accent */}
                   <div className="h-1 w-full bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-500 group-hover:h-1.5" />
 
-                  <div className="p-6 sm:p-7 flex flex-col flex-1">
+                  <div className="p-7 sm:p-8 lg:p-9 flex flex-col flex-1">
                     <div className="flex items-center gap-3 mb-4">
                       <span className="text-[11px] text-[#5a5550] uppercase tracking-[0.15em] font-semibold">
                         {post.category}
