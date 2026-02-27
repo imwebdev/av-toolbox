@@ -30,7 +30,7 @@ export function ToolCard({ tool, variant = 'dark' }: { tool: Tool; variant?: 'da
           style={{ backgroundColor: tool.color }}
         />
 
-        <div className="p-7 sm:p-8 lg:p-9 flex flex-col flex-1">
+        <div className="p-5 flex flex-col flex-1">
           {/* Icon with colored background */}
           <div
             className="mb-6 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"

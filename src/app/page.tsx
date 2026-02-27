@@ -160,7 +160,7 @@ export default function Home() {
                   {/* Color accent */}
                   <div className="h-1 w-full bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-500 group-hover:h-1.5" />
 
-                  <div className="p-7 sm:p-8 lg:p-9 flex flex-col flex-1">
+                  <div className="p-5 flex flex-col flex-1">
                     <div className="flex items-center gap-3 mb-4">
                       <span className="text-[11px] text-[#5a5550] uppercase tracking-[0.15em] font-semibold">
                         {post.category}
