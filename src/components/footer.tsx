@@ -1,44 +1,33 @@
 import Link from 'next/link';
-import { Wrench, Github, Twitter, Youtube } from 'lucide-react';
+import { Wrench } from 'lucide-react';
 import { tools, categories } from '@/lib/tools-data';
 
 export function Footer() {
   const categoryKeys = Object.keys(categories) as (keyof typeof categories)[];
 
   return (
-    <footer className="border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+    <footer className="border-t border-[#2a2a2a]">
+      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-16 sm:py-20">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
           {/* Brand */}
-          <div className="lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2.5 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center">
-                <Wrench className="w-4 h-4 text-white" />
+          <div className="col-span-2 lg:col-span-1">
+            <Link href="/" className="flex items-center gap-3 mb-5">
+              <div className="w-8 h-8 rounded-lg bg-[#e8e4df] flex items-center justify-center">
+                <Wrench className="w-4 h-4 text-[#141414]" />
               </div>
-              <span className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+              <span className="text-[15px] font-semibold text-[#e8e4df] tracking-tight">
                 AV Toolbox
               </span>
             </Link>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed mb-5 max-w-xs">
-              Free production-grade calculators and utilities for live streaming, broadcast, and AV professionals.
+            <p className="text-sm text-[#8a8580] leading-relaxed max-w-xs">
+              Free production-grade calculators and utilities for AV professionals.
             </p>
-            <div className="flex items-center gap-3">
-              <a href="https://github.com/imwebdev/av-toolbox" target="_blank" rel="noopener noreferrer" className="w-8 h-8 flex items-center justify-center rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors" aria-label="GitHub">
-                <Github className="w-4 h-4" />
-              </a>
-              <a href="#" className="w-8 h-8 flex items-center justify-center rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors" aria-label="Twitter">
-                <Twitter className="w-4 h-4" />
-              </a>
-              <a href="#" className="w-8 h-8 flex items-center justify-center rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors" aria-label="YouTube">
-                <Youtube className="w-4 h-4" />
-              </a>
-            </div>
           </div>
 
           {/* Tool categories */}
           {categoryKeys.map(key => (
             <div key={key}>
-              <h3 className="text-sm font-semibold text-zinc-900 dark:text-white mb-4">
+              <h3 className="text-xs uppercase tracking-[0.15em] text-[#5a5550] mb-4">
                 {categories[key].label}
               </h3>
               <ul className="space-y-2.5">
@@ -48,7 +37,7 @@ export function Footer() {
                     <li key={tool.slug}>
                       <Link
                         href={`/tools/${tool.slug}`}
-                        className="text-sm text-zinc-500 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                        className="text-sm text-[#8a8580] hover:text-[#e8e4df] transition-colors duration-200"
                       >
                         {tool.name}
                       </Link>
@@ -60,15 +49,15 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-zinc-400 dark:text-zinc-500">
-            &copy; {new Date().getFullYear()} AV Toolbox. Free tools for AV professionals.
+        <div className="mt-14 pt-6 border-t border-[#2a2a2a] flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-[#5a5550]">
+            &copy; {new Date().getFullYear()} AV Toolbox
           </p>
           <div className="flex items-center gap-6">
-            <Link href="/blog" className="text-xs text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">
+            <Link href="/blog" className="text-xs text-[#5a5550] hover:text-[#8a8580] transition-colors duration-200">
               Blog
             </Link>
-            <Link href="/" className="text-xs text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">
+            <Link href="/" className="text-xs text-[#5a5550] hover:text-[#8a8580] transition-colors duration-200">
               All Tools
             </Link>
           </div>
