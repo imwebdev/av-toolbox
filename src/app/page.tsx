@@ -67,7 +67,7 @@ export default function Home() {
                 </h2>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                 {catTools.map(tool => (
                   <ToolCard key={tool.slug} tool={tool} variant={isLight ? 'light' : 'dark'} />
                 ))}
@@ -103,11 +103,11 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {recentPosts.map(post => (
-              <Link key={post.slug} href={`/blog/${post.slug}`} className="group block">
-                <article className="rounded-2xl border border-[#282828] bg-[#141414] p-7 sm:p-8 transition-all duration-300 hover:border-[#383838] hover:bg-[#171717] h-full flex flex-col">
-                  <div className="flex items-center gap-3 mb-5">
+              <Link key={post.slug} href={`/blog/${post.slug}`} className="group block h-full">
+                <article className="rounded-2xl border border-[#282828] bg-[#141414] p-8 sm:p-10 transition-all duration-300 ease-out group-hover:-translate-y-1.5 group-hover:shadow-2xl group-hover:shadow-black/30 group-hover:border-[#444] group-hover:bg-[#171717] h-full flex flex-col">
+                  <div className="flex items-center gap-3 mb-6">
                     <span className="text-[11px] text-[#5a5550] uppercase tracking-[0.2em] font-medium">
                       {post.category}
                     </span>
@@ -116,15 +116,15 @@ export default function Home() {
                       {post.readTime} read
                     </span>
                   </div>
-                  <h3 className="text-[15px] font-medium text-[#e8e4df] mb-3 leading-snug group-hover:text-white transition-colors duration-200">
+                  <h3 className="text-base font-medium text-[#e8e4df] mb-3 leading-snug group-hover:text-white transition-colors duration-200">
                     {post.title}
                   </h3>
                   <p className="text-sm text-[#6a6560] leading-relaxed flex-1 line-clamp-2">
                     {post.excerpt}
                   </p>
-                  <div className="flex items-center gap-2 mt-6 text-sm text-[#5a5550] group-hover:text-[#8a8580] transition-colors duration-200">
+                  <div className="flex items-center gap-2 mt-8 text-sm font-medium text-[#5a5550] group-hover:text-[#e8e4df] transition-all duration-200">
                     <span>Read more</span>
-                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
                   </div>
                 </article>
               </Link>
