@@ -36,9 +36,9 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a1a] via-[#141414] to-[#141414]" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-gradient-to-b from-blue-500/[0.03] via-purple-500/[0.02] to-transparent rounded-full blur-3xl" />
 
-        <div className="relative section-container pt-28 sm:pt-36 lg:pt-44 pb-20 sm:pb-28 lg:pb-36">
-          <div className="flex items-center gap-2 mb-8">
-            <div className="h-px w-8 bg-gradient-to-r from-blue-500 to-purple-500" />
+        <div className="relative section-container" style={{ paddingTop: '7rem', paddingBottom: '5rem' }}>
+          <div className="flex items-center" style={{ gap: '8px', marginBottom: '2rem' }}>
+            <div className="h-px bg-gradient-to-r from-blue-500 to-purple-500" style={{ width: '32px' }} />
             <span className="text-xs text-[#8a8580] tracking-widest uppercase font-medium">
               {tools.length} free tools
             </span>
@@ -52,22 +52,22 @@ export default function Home() {
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg text-[#7a756f] leading-relaxed max-w-lg mt-8">
+          <p className="text-base sm:text-lg text-[#7a756f] leading-relaxed max-w-lg" style={{ marginTop: '2rem' }}>
             Free calculators and utilities for live streaming, broadcast, and audio-visual engineering. No signup required.
           </p>
 
           {/* Quick stats */}
-          <div className="flex items-center gap-8 mt-12">
-            <div className="flex items-center gap-2.5">
-              <Zap className="w-4 h-4 text-amber-500" />
+          <div className="flex items-center" style={{ gap: '2rem', marginTop: '3rem' }}>
+            <div className="flex items-center" style={{ gap: '10px' }}>
+              <Zap className="text-amber-500" style={{ width: '16px', height: '16px' }} />
               <span className="text-sm text-[#8a8580]">Instant results</span>
             </div>
-            <div className="flex items-center gap-2.5">
-              <Shield className="w-4 h-4 text-emerald-500" />
+            <div className="flex items-center" style={{ gap: '10px' }}>
+              <Shield className="text-emerald-500" style={{ width: '16px', height: '16px' }} />
               <span className="text-sm text-[#8a8580]">No data collected</span>
             </div>
-            <div className="flex items-center gap-2.5 hidden sm:flex">
-              <Globe className="w-4 h-4 text-blue-500" />
+            <div className="hidden sm:flex items-center" style={{ gap: '10px' }}>
+              <Globe className="text-blue-500" style={{ width: '16px', height: '16px' }} />
               <span className="text-sm text-[#8a8580]">Works offline</span>
             </div>
           </div>
@@ -85,14 +85,16 @@ export default function Home() {
             key={category}
             className={isLight ? 'bg-[#f0ece8]' : ''}
           >
-            <div className="section-container py-20 sm:py-24 lg:py-32">
-              <div className="flex items-end justify-between mb-10 sm:mb-14">
+            <div className="section-container" style={{ paddingTop: '5rem', paddingBottom: '5rem' }}>
+              <div className="flex items-end justify-between" style={{ marginBottom: '3rem' }}>
                 <div>
-                  <div className="flex items-center gap-2.5 mb-3">
+                  <div className="flex items-center" style={{ gap: '10px', marginBottom: '12px' }}>
                     <div
-                      className="w-1.5 h-1.5 rounded-full"
+                      className="rounded-full"
                       style={{
                         backgroundColor: catTools[0]?.color || '#8a8580',
+                        width: '6px',
+                        height: '6px',
                       }}
                     />
                     <p className={`text-[11px] uppercase tracking-[0.2em] font-semibold ${
@@ -114,7 +116,7 @@ export default function Home() {
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-7">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ gap: '20px' }}>
                 {catTools.map(tool => (
                   <ToolCard key={tool.slug} tool={tool} variant={isLight ? 'light' : 'dark'} />
                 ))}
@@ -125,17 +127,17 @@ export default function Home() {
       })}
 
       {/* Newsletter */}
-      <section className="section-container py-20 sm:py-24 lg:py-32">
+      <section className="section-container" style={{ paddingTop: '5rem', paddingBottom: '5rem' }}>
         <NewsletterSignup />
       </section>
 
       {/* Recent Articles */}
       <section className="bg-[#191919]">
-        <div className="section-container py-20 sm:py-24 lg:py-32">
-          <div className="flex items-end justify-between mb-10 sm:mb-14">
+        <div className="section-container" style={{ paddingTop: '5rem', paddingBottom: '5rem' }}>
+          <div className="flex items-end justify-between" style={{ marginBottom: '3rem' }}>
             <div>
-              <div className="flex items-center gap-2.5 mb-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <div className="flex items-center" style={{ gap: '10px', marginBottom: '12px' }}>
+                <div className="rounded-full bg-emerald-500" style={{ width: '6px', height: '6px' }} />
                 <p className="text-[11px] uppercase tracking-[0.2em] text-[#5a5550] font-semibold">
                   Resources
                 </p>
@@ -146,22 +148,23 @@ export default function Home() {
             </div>
             <Link
               href="/blog"
-              className="hidden sm:flex items-center gap-2 text-sm text-[#5a5550] hover:text-[#e8e4df] transition-colors duration-200"
+              className="hidden sm:flex items-center text-sm text-[#5a5550] hover:text-[#e8e4df] transition-colors duration-200"
+              style={{ gap: '8px' }}
             >
               View all
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight style={{ width: '14px', height: '14px' }} />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-7">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ gap: '20px' }}>
             {recentPosts.map(post => (
               <Link key={post.slug} href={`/blog/${post.slug}`} className="group block h-full">
-                <article className="relative overflow-hidden rounded-2xl border border-[#232323] bg-[#141414] transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-black/40 group-hover:border-[#383838] h-full flex flex-col">
+                <article className="relative overflow-hidden rounded-2xl border border-[#232323] bg-[#141414] transition-all duration-500 ease-out group-hover:-translate-y-1.5 group-hover:shadow-2xl group-hover:shadow-black/40 group-hover:border-[#383838] h-full flex flex-col">
                   {/* Color accent */}
                   <div className="h-1 w-full bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-500 group-hover:h-1.5" />
 
-                  <div className="p-5 flex flex-col flex-1">
-                    <div className="flex items-center gap-3 mb-4">
+                  <div className="flex flex-col flex-1" style={{ padding: '24px 24px 22px' }}>
+                    <div className="flex items-center" style={{ gap: '12px', marginBottom: '16px' }}>
                       <span className="text-[11px] text-[#5a5550] uppercase tracking-[0.15em] font-semibold">
                         {post.category}
                       </span>
@@ -170,15 +173,21 @@ export default function Home() {
                         {post.readTime} read
                       </span>
                     </div>
-                    <h3 className="text-[15px] font-semibold text-[#f0ece8] mb-2.5 leading-snug group-hover:text-white transition-colors duration-200">
+                    <h3
+                      className="font-semibold text-[#f0ece8] leading-snug group-hover:text-white transition-colors duration-200"
+                      style={{ fontSize: '15px', marginBottom: '8px' }}
+                    >
                       {post.title}
                     </h3>
                     <p className="text-[13px] text-[#7a756f] leading-relaxed flex-1 line-clamp-2">
                       {post.excerpt}
                     </p>
-                    <div className="flex items-center gap-2 mt-6 text-[13px] font-medium text-[#5a5550] group-hover:text-[#e8e4df] transition-all duration-300">
+                    <div
+                      className="flex items-center text-[13px] font-medium text-[#5a5550] group-hover:text-[#e8e4df] transition-all duration-300"
+                      style={{ marginTop: '24px', gap: '6px' }}
+                    >
                       <span>Read more</span>
-                      <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1.5" />
+                      <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1.5" style={{ width: '14px', height: '14px' }} />
                     </div>
                   </div>
                 </article>
@@ -186,31 +195,32 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="sm:hidden mt-8 text-center">
+          <div className="sm:hidden text-center" style={{ marginTop: '2rem' }}>
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-sm text-[#8a8580]"
+              className="inline-flex items-center text-sm text-[#8a8580]"
+              style={{ gap: '8px' }}
             >
               View all articles
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight style={{ width: '14px', height: '14px' }} />
             </Link>
           </div>
         </div>
       </section>
 
       {/* SEO Content */}
-      <section className="section-container py-20 sm:py-24 lg:py-32">
+      <section className="section-container" style={{ paddingTop: '5rem', paddingBottom: '5rem' }}>
         <div className="max-w-2xl">
-          <div className="flex items-center gap-2.5 mb-3">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#5a5550]" />
+          <div className="flex items-center" style={{ gap: '10px', marginBottom: '12px' }}>
+            <div className="rounded-full bg-[#5a5550]" style={{ width: '6px', height: '6px' }} />
             <p className="text-[11px] uppercase tracking-[0.2em] text-[#5a5550] font-semibold">
               About
             </p>
           </div>
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight text-[#f0ece8] mb-8">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight text-[#f0ece8]" style={{ marginBottom: '2rem' }}>
             Why AV Toolbox?
           </h2>
-          <div className="space-y-5 text-sm text-[#8a8580] leading-[1.85]">
+          <div className="text-sm text-[#8a8580] leading-[1.85]" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <p>
               AV Toolbox provides free, production-grade calculators and utilities built specifically for live streaming, broadcast, and audio-visual professionals. Every tool is designed to solve real problems that engineers face daily.
             </p>

@@ -11,17 +11,17 @@ function ButtonGroup({ options, value, onChange, color }: {
   color: string;
 }) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap" style={{ gap: '8px' }}>
       {options.map(opt => (
         <button
           key={opt.value}
           onClick={() => onChange(opt.value)}
-          className={`px-3.5 py-2 text-sm font-medium rounded-lg border transition-all ${
+          className={`text-sm font-medium rounded-lg border transition-all ${
             value === opt.value
               ? 'text-white border-transparent shadow-sm'
-              : 'text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 bg-white dark:bg-zinc-800'
+              : 'text-[#8a8580] border-[#2a2a2a] hover:border-[#3a3a3a] bg-[#1e1e1e]'
           }`}
-          style={value === opt.value ? { backgroundColor: color } : undefined}
+          style={{ padding: '8px 14px', ...(value === opt.value ? { backgroundColor: color } : {}) }}
         >
           {opt.label}
         </button>
@@ -39,13 +39,17 @@ function ResultCard({ label, value, unit, highlight = false, color }: {
   color: string;
 }) {
   return (
-    <div className={`rounded-xl p-4 ${highlight ? 'border-2' : 'border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50'}`}
-      style={highlight ? { borderColor: color, backgroundColor: `${color}08` } : undefined}
+    <div
+      className={`rounded-xl ${highlight ? 'border-2' : 'border border-[#2a2a2a] bg-[#1a1a1a]'}`}
+      style={{
+        padding: '16px',
+        ...(highlight ? { borderColor: color, backgroundColor: `${color}08` } : {}),
+      }}
     >
-      <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1">{label}</p>
+      <p className="text-xs font-medium text-[#6a6560]" style={{ marginBottom: '4px' }}>{label}</p>
       <p className="text-2xl font-bold font-mono tracking-tight" style={highlight ? { color } : undefined}>
-        <span className={highlight ? '' : 'text-zinc-900 dark:text-white'}>{value}</span>
-        <span className="text-sm font-normal text-zinc-400 dark:text-zinc-500 ml-1">{unit}</span>
+        <span className={highlight ? '' : 'text-[#f0ece8]'}>{value}</span>
+        <span className="text-sm font-normal text-[#5a5550]" style={{ marginLeft: '4px' }}>{unit}</span>
       </p>
     </div>
   );
@@ -62,17 +66,18 @@ function InputField({ label, value, onChange, unit, min, max }: {
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">{label}</label>
-      <div className="flex items-center gap-2">
+      <label className="block text-sm font-medium text-[#b0aca8]" style={{ marginBottom: '8px' }}>{label}</label>
+      <div className="flex items-center" style={{ gap: '8px' }}>
         <input
           type="number"
           value={value}
           onChange={e => onChange(Number(e.target.value))}
           min={min}
           max={max}
-          className="w-full px-3 py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+          className="w-full rounded-lg border border-[#2a2a2a] bg-[#1e1e1e] text-[#f0ece8] text-sm focus:outline-none focus:border-[#5a5550] focus:ring-1 focus:ring-[#5a5550]"
+          style={{ padding: '10px 12px' }}
         />
-        <span className="text-sm text-zinc-400 dark:text-zinc-500 whitespace-nowrap">{unit}</span>
+        <span className="text-sm text-[#5a5550] whitespace-nowrap">{unit}</span>
       </div>
     </div>
   );
@@ -89,19 +94,19 @@ function StreamDelayCalc({ color }: { color: string }) {
   const totalSec = (totalMs / 1000).toFixed(1);
 
   return (
-    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-      <div className="p-6 sm:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-5">
+    <div className="rounded-2xl border border-[#232323] bg-[#191919] overflow-hidden">
+      <div style={{ padding: '28px' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <InputField label="Encoder Delay" value={encoder} onChange={setEncoder} unit="ms" min={0} max={5000} />
             <InputField label="Player Buffer" value={buffer} onChange={setBuffer} unit="sec" min={0} max={30} />
             <InputField label="Network Latency" value={network} onChange={setNetwork} unit="ms" min={0} max={2000} />
             <InputField label="Segment Duration" value={segment} onChange={setSegment} unit="sec" min={0} max={30} />
           </div>
 
-          <div className="space-y-4">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <ResultCard label="Total Delay" value={totalSec} unit="seconds" highlight color={color} />
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2" style={{ gap: '12px' }}>
               <ResultCard label="Encoding" value={`${encoder}`} unit="ms" color={color} />
               <ResultCard label="Network" value={`${network}`} unit="ms" color={color} />
               <ResultCard label="Buffering" value={`${buffer * 1000}`} unit="ms" color={color} />
@@ -109,15 +114,15 @@ function StreamDelayCalc({ color }: { color: string }) {
             </div>
 
             {/* Pipeline bar */}
-            <div className="mt-4 rounded-lg bg-zinc-100 dark:bg-zinc-800 p-4">
-              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-3">Pipeline Breakdown</p>
+            <div className="rounded-lg bg-[#1e1e1e]" style={{ padding: '16px', marginTop: '4px' }}>
+              <p className="text-xs font-medium text-[#6a6560]" style={{ marginBottom: '12px' }}>Pipeline Breakdown</p>
               <div className="flex rounded-full overflow-hidden h-3">
                 <div className="bg-blue-500 transition-all" style={{ width: `${(encoder / totalMs) * 100}%` }} title={`Encoding: ${encoder}ms`} />
                 <div className="bg-amber-500 transition-all" style={{ width: `${(network / totalMs) * 100}%` }} title={`Network: ${network}ms`} />
                 <div className="bg-violet-500 transition-all" style={{ width: `${((buffer * 1000) / totalMs) * 100}%` }} title={`Buffer: ${buffer}s`} />
                 <div className="bg-emerald-500 transition-all" style={{ width: `${((segment * 1000) / totalMs) * 100}%` }} title={`Segment: ${segment}s`} />
               </div>
-              <div className="flex justify-between mt-2 text-[10px] text-zinc-400 dark:text-zinc-500">
+              <div className="flex justify-between text-[10px] text-[#5a5550]" style={{ marginTop: '8px' }}>
                 <span>Encoding</span>
                 <span>Network</span>
                 <span>Buffer</span>
@@ -153,29 +158,29 @@ function BitrateCalc({ color }: { color: string }) {
   const bitrateUnit = (kbps: number) => kbps >= 1000 ? 'Mbps' : 'kbps';
 
   return (
-    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-      <div className="p-6 sm:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-5">
+    <div className="rounded-2xl border border-[#232323] bg-[#191919] overflow-hidden">
+      <div style={{ padding: '28px' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div>
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Resolution</label>
+              <label className="block text-sm font-medium text-[#b0aca8]" style={{ marginBottom: '8px' }}>Resolution</label>
               <ButtonGroup options={[{ label: '720p', value: '720p' }, { label: '1080p', value: '1080p' }, { label: '1440p', value: '1440p' }, { label: '4K', value: '4K' }]} value={resolution} onChange={setResolution} color={color} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Frame Rate</label>
+              <label className="block text-sm font-medium text-[#b0aca8]" style={{ marginBottom: '8px' }}>Frame Rate</label>
               <ButtonGroup options={[{ label: '24fps', value: '24' }, { label: '25fps', value: '25' }, { label: '30fps', value: '30' }, { label: '50fps', value: '50' }, { label: '60fps', value: '60' }]} value={fps} onChange={setFps} color={color} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Codec</label>
+              <label className="block text-sm font-medium text-[#b0aca8]" style={{ marginBottom: '8px' }}>Codec</label>
               <ButtonGroup options={[{ label: 'H.264', value: 'H.264' }, { label: 'H.265/HEVC', value: 'H.265/HEVC' }, { label: 'AV1', value: 'AV1' }, { label: 'VP9', value: 'VP9' }]} value={codec} onChange={setCodec} color={color} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Quality</label>
+              <label className="block text-sm font-medium text-[#b0aca8]" style={{ marginBottom: '8px' }}>Quality</label>
               <ButtonGroup options={[{ label: 'Low', value: 'Low' }, { label: 'Medium', value: 'Medium' }, { label: 'High', value: 'High' }, { label: 'Ultra', value: 'Ultra' }]} value={quality} onChange={setQuality} color={color} />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2" style={{ gap: '12px' }}>
             <ResultCard label="Video Bitrate" value={formatBitrate(videoBitrate)} unit={bitrateUnit(videoBitrate)} highlight color={color} />
             <ResultCard label="Audio Bitrate" value={`${audioBitrate}`} unit="kbps" color={color} />
             <ResultCard label="Total Bitrate" value={formatBitrate(totalBitrate)} unit={bitrateUnit(totalBitrate)} color={color} />
@@ -199,34 +204,34 @@ function SafeAreaCalc({ color }: { color: string }) {
   const res = resolutions[resolution] || resolutions['1080p'];
 
   return (
-    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-      <div className="p-6 sm:p-8">
-        <div className="mb-5">
-          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Resolution</label>
+    <div className="rounded-2xl border border-[#232323] bg-[#191919] overflow-hidden">
+      <div style={{ padding: '28px' }}>
+        <div style={{ marginBottom: '20px' }}>
+          <label className="block text-sm font-medium text-[#b0aca8]" style={{ marginBottom: '8px' }}>Resolution</label>
           <ButtonGroup options={Object.keys(resolutions).map(r => ({ label: r, value: r }))} value={resolution} onChange={setResolution} color={color} />
         </div>
 
-        <div className="relative aspect-video bg-zinc-900 dark:bg-zinc-800 rounded-xl overflow-hidden">
+        <div className="relative aspect-video bg-[#1e1e1e] rounded-xl overflow-hidden">
           {/* Action safe (90%) */}
           <div className="absolute border-2 border-dashed border-amber-500/60" style={{ top: '5%', left: '5%', right: '5%', bottom: '5%' }}>
-            <span className="absolute top-1 left-2 text-[10px] font-mono text-amber-500">Action Safe (90%)</span>
+            <span className="absolute text-[10px] font-mono text-amber-500" style={{ top: '4px', left: '8px' }}>Action Safe (90%)</span>
           </div>
           {/* Title safe (80%) */}
           <div className="absolute border-2 border-blue-500/80" style={{ top: '10%', left: '10%', right: '10%', bottom: '10%' }}>
-            <span className="absolute top-1 left-2 text-[10px] font-mono text-blue-400">Title Safe (80%)</span>
+            <span className="absolute text-[10px] font-mono text-blue-400" style={{ top: '4px', left: '8px' }}>Title Safe (80%)</span>
           </div>
           {/* Center cross */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8">
-            <div className="absolute top-1/2 left-0 right-0 h-px bg-zinc-500/40" />
-            <div className="absolute left-1/2 top-0 bottom-0 w-px bg-zinc-500/40" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style={{ width: '32px', height: '32px' }}>
+            <div className="absolute top-1/2 left-0 right-0 h-px bg-[#5a5550]/40" />
+            <div className="absolute left-1/2 top-0 bottom-0 w-px bg-[#5a5550]/40" />
           </div>
           {/* Resolution label */}
-          <div className="absolute bottom-3 right-3 text-[11px] font-mono text-zinc-400 bg-black/40 px-2 py-1 rounded">
+          <div className="absolute text-[11px] font-mono text-[#6a6560] bg-black/40 rounded" style={{ bottom: '12px', right: '12px', padding: '4px 8px' }}>
             {res.w}x{res.h}
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
+        <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: '12px', marginTop: '20px' }}>
           <ResultCard label="Full Frame" value={`${res.w}x${res.h}`} unit="" color={color} />
           <ResultCard label="Action Safe" value={`${Math.round(res.w * 0.9)}x${Math.round(res.h * 0.9)}`} unit="" color={color} />
           <ResultCard label="Title Safe" value={`${Math.round(res.w * 0.8)}x${Math.round(res.h * 0.8)}`} unit="" color={color} />
@@ -255,35 +260,36 @@ function RtmpCalc({ color }: { color: string }) {
   const fullUrl = streamKey ? `${url}/${streamKey}` : url;
 
   return (
-    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-      <div className="p-6 sm:p-8 space-y-5">
+    <div className="rounded-2xl border border-[#232323] bg-[#191919] overflow-hidden">
+      <div style={{ padding: '28px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <div>
-          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Platform</label>
+          <label className="block text-sm font-medium text-[#b0aca8]" style={{ marginBottom: '8px' }}>Platform</label>
           <ButtonGroup options={Object.entries(platforms).map(([k, v]) => ({ label: v.name, value: k }))} value={platform} onChange={setPlatform} color={color} />
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Protocol</label>
+          <label className="block text-sm font-medium text-[#b0aca8]" style={{ marginBottom: '8px' }}>Protocol</label>
           <ButtonGroup options={[{ label: 'RTMPS (Secure)', value: 'rtmps' }, { label: 'RTMP', value: 'rtmp' }]} value={protocol} onChange={setProtocol} color={color} />
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Stream Key</label>
+          <label className="block text-sm font-medium text-[#b0aca8]" style={{ marginBottom: '8px' }}>Stream Key</label>
           <input
             type="text"
             value={streamKey}
             onChange={e => setStreamKey(e.target.value)}
             placeholder="Paste your stream key here"
-            className="w-full px-3 py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 font-mono"
+            className="w-full rounded-lg border border-[#2a2a2a] bg-[#1e1e1e] text-[#f0ece8] text-sm focus:outline-none focus:border-[#5a5550] focus:ring-1 focus:ring-[#5a5550] font-mono"
+            style={{ padding: '10px 12px' }}
           />
         </div>
 
-        <div className="rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 p-4">
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">Server URL</p>
-          <p className="font-mono text-sm text-zinc-900 dark:text-white break-all">{url || 'Enter custom URL'}</p>
+        <div className="rounded-xl bg-[#1a1a1a] border border-[#2a2a2a]" style={{ padding: '16px' }}>
+          <p className="text-xs font-medium text-[#6a6560]" style={{ marginBottom: '8px' }}>Server URL</p>
+          <p className="font-mono text-sm text-[#f0ece8] break-all">{url || 'Enter custom URL'}</p>
         </div>
 
         {streamKey && (
-          <div className="rounded-xl border-2 p-4" style={{ borderColor: color, backgroundColor: `${color}08` }}>
-            <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">Full Stream URL</p>
+          <div className="rounded-xl border-2" style={{ padding: '16px', borderColor: color, backgroundColor: `${color}08` }}>
+            <p className="text-xs font-medium text-[#6a6560]" style={{ marginBottom: '8px' }}>Full Stream URL</p>
             <p className="font-mono text-sm break-all" style={{ color }}>{fullUrl}</p>
           </div>
         )}
@@ -304,10 +310,10 @@ function CountdownCalc({ color }: { color: string }) {
   const displayS = String(totalSeconds % 60).padStart(2, '0');
 
   return (
-    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-      <div className="p-6 sm:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-5">
+    <div className="rounded-2xl border border-[#232323] bg-[#191919] overflow-hidden">
+      <div style={{ padding: '28px' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <InputField label="Hours" value={hours} onChange={setHours} unit="h" min={0} max={24} />
             <InputField label="Minutes" value={minutes} onChange={setMinutes} unit="m" min={0} max={59} />
             <InputField label="Seconds" value={seconds} onChange={setSeconds} unit="s" min={0} max={59} />
@@ -315,9 +321,9 @@ function CountdownCalc({ color }: { color: string }) {
 
           <div className="flex items-center justify-center">
             <div className="text-center">
-              <p className="text-xs font-medium text-zinc-400 dark:text-zinc-500 mb-4 uppercase tracking-wider">Preview</p>
-              <div className="rounded-2xl bg-zinc-900 dark:bg-zinc-800 p-8 sm:p-12 min-w-[280px]">
-                <p className="text-xs text-zinc-500 mb-3 uppercase tracking-widest">Starting Soon</p>
+              <p className="text-xs font-medium text-[#5a5550] uppercase tracking-wider" style={{ marginBottom: '16px' }}>Preview</p>
+              <div className="rounded-2xl bg-[#0e0e0e]" style={{ padding: '32px 40px', minWidth: '280px' }}>
+                <p className="text-xs text-[#5a5550] uppercase tracking-widest" style={{ marginBottom: '12px' }}>Starting Soon</p>
                 <p className="font-mono text-5xl sm:text-6xl font-bold text-white tracking-wider">
                   {displayH}:{displayM}:{displayS}
                 </p>
@@ -338,51 +344,51 @@ function LowerThirdCalc({ color }: { color: string }) {
   const [style, setStyle] = useState('modern');
 
   return (
-    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-      <div className="p-6 sm:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-5">
+    <div className="rounded-2xl border border-[#232323] bg-[#191919] overflow-hidden">
+      <div style={{ padding: '28px' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div>
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Name</label>
-              <input type="text" value={name} onChange={e => setName(e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" />
+              <label className="block text-sm font-medium text-[#b0aca8]" style={{ marginBottom: '8px' }}>Name</label>
+              <input type="text" value={name} onChange={e => setName(e.target.value)} className="w-full rounded-lg border border-[#2a2a2a] bg-[#1e1e1e] text-[#f0ece8] text-sm focus:outline-none focus:border-[#5a5550] focus:ring-1 focus:ring-[#5a5550]" style={{ padding: '10px 12px' }} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Title / Role</label>
-              <input type="text" value={title} onChange={e => setTitle(e.target.value)} className="w-full px-3 py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" />
+              <label className="block text-sm font-medium text-[#b0aca8]" style={{ marginBottom: '8px' }}>Title / Role</label>
+              <input type="text" value={title} onChange={e => setTitle(e.target.value)} className="w-full rounded-lg border border-[#2a2a2a] bg-[#1e1e1e] text-[#f0ece8] text-sm focus:outline-none focus:border-[#5a5550] focus:ring-1 focus:ring-[#5a5550]" style={{ padding: '10px 12px' }} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Accent Color</label>
-              <input type="color" value={bgColor} onChange={e => setBgColor(e.target.value)} className="w-12 h-10 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer" />
+              <label className="block text-sm font-medium text-[#b0aca8]" style={{ marginBottom: '8px' }}>Accent Color</label>
+              <input type="color" value={bgColor} onChange={e => setBgColor(e.target.value)} className="rounded-lg border border-[#2a2a2a] cursor-pointer" style={{ width: '48px', height: '40px' }} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Style</label>
+              <label className="block text-sm font-medium text-[#b0aca8]" style={{ marginBottom: '8px' }}>Style</label>
               <ButtonGroup options={[{ label: 'Modern', value: 'modern' }, { label: 'Classic', value: 'classic' }, { label: 'Minimal', value: 'minimal' }]} value={style} onChange={setStyle} color={color} />
             </div>
           </div>
 
           {/* Preview */}
           <div className="flex items-end justify-center">
-            <div className="relative w-full aspect-video bg-zinc-900 dark:bg-zinc-800 rounded-xl overflow-hidden">
-              <div className="absolute bottom-0 left-0 right-0 p-6">
+            <div className="relative w-full aspect-video bg-[#0e0e0e] rounded-xl overflow-hidden">
+              <div className="absolute bottom-0 left-0 right-0" style={{ padding: '24px' }}>
                 {style === 'modern' && (
-                  <div className="flex items-stretch gap-0 max-w-xs">
-                    <div className="w-1 rounded-l-lg" style={{ backgroundColor: bgColor }} />
-                    <div className="bg-black/80 backdrop-blur-sm px-4 py-3 rounded-r-lg">
+                  <div className="flex items-stretch max-w-xs" style={{ gap: '0' }}>
+                    <div className="rounded-l-lg" style={{ width: '4px', backgroundColor: bgColor }} />
+                    <div className="bg-black/80 backdrop-blur-sm rounded-r-lg" style={{ padding: '12px 16px' }}>
                       <p className="text-white font-bold text-sm">{name}</p>
-                      <p className="text-zinc-400 text-xs">{title}</p>
+                      <p className="text-[#6a6560] text-xs">{title}</p>
                     </div>
                   </div>
                 )}
                 {style === 'classic' && (
                   <div className="max-w-xs">
-                    <div className="px-4 py-2.5 text-white font-bold text-sm" style={{ backgroundColor: bgColor }}>{name}</div>
-                    <div className="bg-zinc-800 px-4 py-2 text-zinc-300 text-xs">{title}</div>
+                    <div className="text-white font-bold text-sm" style={{ padding: '10px 16px', backgroundColor: bgColor }}>{name}</div>
+                    <div className="bg-[#1e1e1e] text-[#8a8580] text-xs" style={{ padding: '8px 16px' }}>{title}</div>
                   </div>
                 )}
                 {style === 'minimal' && (
-                  <div className="max-w-xs bg-white/10 backdrop-blur-sm px-4 py-3 rounded-lg border-l-2" style={{ borderColor: bgColor }}>
+                  <div className="max-w-xs bg-white/10 backdrop-blur-sm rounded-lg border-l-2" style={{ borderColor: bgColor, padding: '12px 16px' }}>
                     <p className="text-white font-medium text-sm">{name}</p>
-                    <p className="text-zinc-400 text-xs">{title}</p>
+                    <p className="text-[#6a6560] text-xs">{title}</p>
                   </div>
                 )}
               </div>
@@ -408,19 +414,19 @@ function AudioDelayCalc({ color }: { color: string }) {
   const delayMs = (distanceInUnit / speedOfSound) * 1000;
 
   return (
-    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-      <div className="p-6 sm:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-5">
+    <div className="rounded-2xl border border-[#232323] bg-[#191919] overflow-hidden">
+      <div style={{ padding: '28px' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <InputField label="Distance" value={distance} onChange={setDistance} unit={unit} min={0} max={10000} />
             <div>
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Unit</label>
+              <label className="block text-sm font-medium text-[#b0aca8]" style={{ marginBottom: '8px' }}>Unit</label>
               <ButtonGroup options={[{ label: 'Feet', value: 'feet' }, { label: 'Meters', value: 'meters' }]} value={unit} onChange={setUnit} color={color} />
             </div>
             <InputField label="Temperature" value={temp} onChange={setTemp} unit={unit === 'feet' ? '°F' : '°C'} min={-40} max={130} />
           </div>
 
-          <div className="space-y-4">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <ResultCard label="Propagation Delay" value={delayMs.toFixed(1)} unit="ms" highlight color={color} />
             <ResultCard label="Speed of Sound" value={speedOfSound.toFixed(1)} unit={unit === 'feet' ? 'ft/s' : 'm/s'} color={color} />
             <ResultCard label="Recommended Delay" value={(delayMs + 10).toFixed(1)} unit="ms (+10ms Haas)" color={color} />
@@ -444,16 +450,16 @@ function AspectRatioCalc({ color }: { color: string }) {
   const megapixels = (totalPixels / 1000000).toFixed(1);
 
   return (
-    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-      <div className="p-6 sm:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-5">
+    <div className="rounded-2xl border border-[#232323] bg-[#191919] overflow-hidden">
+      <div style={{ padding: '28px' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <InputField label="Width" value={width} onChange={setWidth} unit="px" min={1} max={15360} />
             <InputField label="Height" value={height} onChange={setHeight} unit="px" min={1} max={8640} />
 
             <div>
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Quick Presets</label>
-              <div className="flex flex-wrap gap-2">
+              <label className="block text-sm font-medium text-[#b0aca8]" style={{ marginBottom: '8px' }}>Quick Presets</label>
+              <div className="flex flex-wrap" style={{ gap: '8px' }}>
                 {[
                   { label: '720p', w: 1280, h: 720 },
                   { label: '1080p', w: 1920, h: 1080 },
@@ -462,7 +468,12 @@ function AspectRatioCalc({ color }: { color: string }) {
                   { label: '4:3', w: 1440, h: 1080 },
                   { label: '21:9', w: 2560, h: 1080 },
                 ].map(p => (
-                  <button key={p.label} onClick={() => { setWidth(p.w); setHeight(p.h); }} className="px-3 py-1.5 text-xs font-medium rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600 bg-white dark:bg-zinc-800 transition-colors">
+                  <button
+                    key={p.label}
+                    onClick={() => { setWidth(p.w); setHeight(p.h); }}
+                    className="text-xs font-medium rounded-lg border border-[#2a2a2a] text-[#8a8580] hover:border-[#3a3a3a] bg-[#1e1e1e] transition-colors"
+                    style={{ padding: '6px 12px' }}
+                  >
                     {p.label}
                   </button>
                 ))}
@@ -470,16 +481,16 @@ function AspectRatioCalc({ color }: { color: string }) {
             </div>
           </div>
 
-          <div className="space-y-4">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <ResultCard label="Aspect Ratio" value={`${ratioW}:${ratioH}`} unit="" highlight color={color} />
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2" style={{ gap: '12px' }}>
               <ResultCard label="Total Pixels" value={totalPixels.toLocaleString()} unit="px" color={color} />
               <ResultCard label="Megapixels" value={megapixels} unit="MP" color={color} />
             </div>
 
             {/* Visual ratio */}
-            <div className="rounded-xl bg-zinc-50 dark:bg-zinc-800/50 p-4">
-              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-3">Visual Ratio</p>
+            <div className="rounded-xl bg-[#1a1a1a]" style={{ padding: '16px' }}>
+              <p className="text-xs font-medium text-[#6a6560]" style={{ marginBottom: '12px' }}>Visual Ratio</p>
               <div className="flex justify-center">
                 <div
                   className="border-2 rounded-lg max-w-full"
@@ -520,12 +531,12 @@ function CableLengthCalc({ color }: { color: string }) {
   const percentUsed = Math.min(100, (distance / maxDist) * 100);
 
   return (
-    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-      <div className="p-6 sm:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-5">
+    <div className="rounded-2xl border border-[#232323] bg-[#191919] overflow-hidden">
+      <div style={{ padding: '28px' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div>
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Cable Type</label>
+              <label className="block text-sm font-medium text-[#b0aca8]" style={{ marginBottom: '8px' }}>Cable Type</label>
               <ButtonGroup options={[
                 { label: 'HDMI', value: 'hdmi' },
                 { label: 'SDI', value: 'sdi' },
@@ -535,7 +546,7 @@ function CableLengthCalc({ color }: { color: string }) {
               ]} value={cableType} onChange={setCableType} color={color} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Signal Resolution</label>
+              <label className="block text-sm font-medium text-[#b0aca8]" style={{ marginBottom: '8px' }}>Signal Resolution</label>
               <ButtonGroup options={[
                 { label: '1080p30', value: '1080p30' },
                 { label: '1080p60', value: '1080p60' },
@@ -546,10 +557,10 @@ function CableLengthCalc({ color }: { color: string }) {
             <InputField label="Planned Distance" value={distance} onChange={setDistance} unit="ft" min={1} max={5000} />
           </div>
 
-          <div className="space-y-4">
-            <div className={`rounded-xl p-4 border-2 ${isWithinLimit ? 'border-emerald-500 bg-emerald-500/5' : 'border-red-500 bg-red-500/5'}`}>
-              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1">Status</p>
-              <p className={`text-lg font-bold ${isWithinLimit ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div className={`rounded-xl border-2 ${isWithinLimit ? 'border-emerald-500 bg-emerald-500/5' : 'border-red-500 bg-red-500/5'}`} style={{ padding: '16px' }}>
+              <p className="text-xs font-medium text-[#6a6560]" style={{ marginBottom: '4px' }}>Status</p>
+              <p className={`text-lg font-bold ${isWithinLimit ? 'text-emerald-400' : 'text-red-400'}`}>
                 {isWithinLimit ? 'Within safe limit' : 'Exceeds maximum distance'}
               </p>
             </div>
@@ -557,12 +568,12 @@ function CableLengthCalc({ color }: { color: string }) {
             <ResultCard label="Your Distance" value={`${distance}`} unit="ft" color={color} />
 
             {/* Progress bar */}
-            <div className="rounded-xl bg-zinc-50 dark:bg-zinc-800/50 p-4">
-              <div className="flex justify-between text-xs text-zinc-500 dark:text-zinc-400 mb-2">
+            <div className="rounded-xl bg-[#1a1a1a]" style={{ padding: '16px' }}>
+              <div className="flex justify-between text-xs text-[#5a5550]" style={{ marginBottom: '8px' }}>
                 <span>0 ft</span>
                 <span>{maxDist} ft max</span>
               </div>
-              <div className="w-full h-3 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden">
+              <div className="w-full h-3 bg-[#2a2a2a] rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all ${isWithinLimit ? 'bg-emerald-500' : 'bg-red-500'}`}
                   style={{ width: `${percentUsed}%` }}
@@ -571,9 +582,9 @@ function CableLengthCalc({ color }: { color: string }) {
             </div>
 
             {!isWithinLimit && (
-              <div className="rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 p-4">
-                <p className="text-xs font-medium text-amber-700 dark:text-amber-400 mb-1">Recommendation</p>
-                <p className="text-sm text-amber-600 dark:text-amber-400">
+              <div className="rounded-xl bg-amber-950/20 border border-amber-800" style={{ padding: '16px' }}>
+                <p className="text-xs font-medium text-amber-400" style={{ marginBottom: '4px' }}>Recommendation</p>
+                <p className="text-sm text-amber-400/80">
                   Consider using {cableType === 'hdmi' ? 'an active optical HDMI cable or SDI with a converter' : 'fiber optic with appropriate converters'} for this distance.
                 </p>
               </div>
@@ -598,27 +609,27 @@ function SpeakerCoverageCalc({ color }: { color: string }) {
   const splAtDist = sensitivity - 20 * Math.log10(throwDist * 0.3048);
 
   return (
-    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-      <div className="p-6 sm:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-5">
-            <InputField label="Horizontal Dispersion" value={hAngle} onChange={setHAngle} unit="°" min={10} max={180} />
-            <InputField label="Vertical Dispersion" value={vAngle} onChange={setVAngle} unit="°" min={10} max={180} />
+    <div className="rounded-2xl border border-[#232323] bg-[#191919] overflow-hidden">
+      <div style={{ padding: '28px' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <InputField label="Horizontal Dispersion" value={hAngle} onChange={setHAngle} unit="deg" min={10} max={180} />
+            <InputField label="Vertical Dispersion" value={vAngle} onChange={setVAngle} unit="deg" min={10} max={180} />
             <InputField label="Throw Distance" value={throwDist} onChange={setThrowDist} unit="ft" min={1} max={500} />
             <InputField label="Sensitivity (1W/1m)" value={sensitivity} onChange={setSensitivity} unit="dB SPL" min={80} max={120} />
           </div>
 
-          <div className="space-y-4">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <ResultCard label="Coverage Width" value={coverageWidth.toFixed(1)} unit="ft" highlight color={color} />
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2" style={{ gap: '12px' }}>
               <ResultCard label="Coverage Height" value={coverageHeight.toFixed(1)} unit="ft" color={color} />
               <ResultCard label="Coverage Area" value={coverageArea.toFixed(0)} unit="sq ft" color={color} />
             </div>
             <ResultCard label="SPL at Distance" value={splAtDist.toFixed(1)} unit="dB" color={color} />
 
             {/* Visual coverage */}
-            <div className="rounded-xl bg-zinc-50 dark:bg-zinc-800/50 p-4">
-              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-3">Coverage Pattern</p>
+            <div className="rounded-xl bg-[#1a1a1a]" style={{ padding: '16px' }}>
+              <p className="text-xs font-medium text-[#6a6560]" style={{ marginBottom: '12px' }}>Coverage Pattern</p>
               <div className="relative h-32 flex items-end justify-center">
                 <div
                   className="absolute bottom-0 left-1/2 -translate-x-1/2 border-2 rounded-t-full"
@@ -630,7 +641,7 @@ function SpeakerCoverageCalc({ color }: { color: string }) {
                     borderBottom: 'none',
                   }}
                 />
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full" style={{ backgroundColor: color }} />
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-full" style={{ width: '12px', height: '12px', backgroundColor: color }} />
               </div>
             </div>
           </div>
@@ -654,6 +665,6 @@ export function ToolCalculator({ slug, tool }: { slug: string; tool: Tool }) {
     case 'aspect-ratio-calculator': return <AspectRatioCalc color={color} />;
     case 'cable-length-estimator': return <CableLengthCalc color={color} />;
     case 'speaker-coverage-calculator': return <SpeakerCoverageCalc color={color} />;
-    default: return <div className="p-8 text-center text-zinc-500">Calculator coming soon</div>;
+    default: return <div className="text-center text-[#5a5550]" style={{ padding: '32px' }}>Calculator coming soon</div>;
   }
 }

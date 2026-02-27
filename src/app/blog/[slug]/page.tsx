@@ -46,9 +46,9 @@ function renderMarkdown(content: string) {
     if (listItems.length > 0 && listType) {
       const Tag = listType;
       elements.push(
-        <Tag key={`list-${i}`} className={listType === 'ul' ? 'list-disc pl-6 mb-4 space-y-1' : 'list-decimal pl-6 mb-4 space-y-1'}>
+        <Tag key={`list-${i}`} style={{ paddingLeft: '1.5rem', marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '4px' }} className={listType === 'ul' ? 'list-disc' : 'list-decimal'}>
           {listItems.map((item, idx) => (
-            <li key={idx} className="text-zinc-600 dark:text-zinc-300 leading-relaxed">{renderInline(item)}</li>
+            <li key={idx} className="text-[#b0aca8] leading-relaxed">{renderInline(item)}</li>
           ))}
         </Tag>
       );
@@ -61,13 +61,13 @@ function renderMarkdown(content: string) {
     const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g);
     return parts.map((part, idx) => {
       if (part.startsWith('**') && part.endsWith('**')) {
-        return <strong key={idx} className="font-semibold text-zinc-900 dark:text-white">{part.slice(2, -2)}</strong>;
+        return <strong key={idx} className="font-semibold text-[#f0ece8]">{part.slice(2, -2)}</strong>;
       }
       if (part.startsWith('*') && part.endsWith('*')) {
         return <em key={idx}>{part.slice(1, -1)}</em>;
       }
       if (part.startsWith('`') && part.endsWith('`')) {
-        return <code key={idx} className="text-sm px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-mono">{part.slice(1, -1)}</code>;
+        return <code key={idx} className="text-sm rounded bg-[#1e1e1e] text-[#b0aca8] font-mono" style={{ padding: '2px 6px' }}>{part.slice(1, -1)}</code>;
       }
       return part;
     });
@@ -78,10 +78,10 @@ function renderMarkdown(content: string) {
 
     if (line.startsWith('## ')) {
       flushList();
-      elements.push(<h2 key={i} className="text-2xl font-bold text-zinc-900 dark:text-white mt-10 mb-4">{line.slice(3)}</h2>);
+      elements.push(<h2 key={i} className="text-2xl font-bold text-[#f0ece8]" style={{ marginTop: '2.5rem', marginBottom: '1rem' }}>{line.slice(3)}</h2>);
     } else if (line.startsWith('### ')) {
       flushList();
-      elements.push(<h3 key={i} className="text-xl font-semibold text-zinc-900 dark:text-white mt-8 mb-3">{line.slice(4)}</h3>);
+      elements.push(<h3 key={i} className="text-xl font-semibold text-[#f0ece8]" style={{ marginTop: '2rem', marginBottom: '0.75rem' }}>{line.slice(4)}</h3>);
     } else if (line.startsWith('- ') || line.startsWith('* ')) {
       if (listType !== 'ul') flushList();
       listType = 'ul';
@@ -104,12 +104,12 @@ function renderMarkdown(content: string) {
       }
       if (rows.length > 0) {
         elements.push(
-          <div key={i} className="overflow-x-auto mb-6">
+          <div key={i} className="overflow-x-auto" style={{ marginBottom: '1.5rem' }}>
             <table className="w-full border-collapse">
               <thead>
                 <tr>
                   {rows[0].map((cell, ci) => (
-                    <th key={ci} className="text-left text-sm font-semibold text-zinc-900 dark:text-white px-4 py-3 border-b border-zinc-200 dark:border-zinc-700">{cell}</th>
+                    <th key={ci} className="text-left text-sm font-semibold text-[#f0ece8] border-b border-[#2a2a2a]" style={{ padding: '12px 16px' }}>{cell}</th>
                   ))}
                 </tr>
               </thead>
@@ -117,7 +117,7 @@ function renderMarkdown(content: string) {
                 {rows.slice(1).map((row, ri) => (
                   <tr key={ri}>
                     {row.map((cell, ci) => (
-                      <td key={ci} className="text-sm text-zinc-600 dark:text-zinc-300 px-4 py-3 border-b border-zinc-100 dark:border-zinc-800">{cell}</td>
+                      <td key={ci} className="text-sm text-[#8a8580] border-b border-[#1e1e1e]" style={{ padding: '12px 16px' }}>{cell}</td>
                     ))}
                   </tr>
                 ))}
@@ -131,7 +131,7 @@ function renderMarkdown(content: string) {
       flushList();
     } else {
       flushList();
-      elements.push(<p key={i} className="text-zinc-600 dark:text-zinc-300 leading-relaxed mb-4">{renderInline(line)}</p>);
+      elements.push(<p key={i} className="text-[#b0aca8] leading-relaxed" style={{ marginBottom: '1rem' }}>{renderInline(line)}</p>);
     }
     i++;
   }
@@ -162,41 +162,44 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* Breadcrumbs */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-        <nav className="flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400">
-          <Link href="/" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Home</Link>
-          <ChevronRight className="w-3.5 h-3.5" />
-          <Link href="/blog" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Blog</Link>
-          <ChevronRight className="w-3.5 h-3.5" />
-          <span className="text-zinc-900 dark:text-white font-medium truncate">{post.title}</span>
+      <div className="max-w-4xl mx-auto" style={{ paddingTop: '16px', paddingLeft: '2rem', paddingRight: '2rem' }}>
+        <nav className="flex items-center text-sm text-[#6a6560]" style={{ gap: '6px' }}>
+          <Link href="/" className="hover:text-[#e8e4df] transition-colors">Home</Link>
+          <ChevronRight style={{ width: '14px', height: '14px' }} />
+          <Link href="/blog" className="hover:text-[#e8e4df] transition-colors">Blog</Link>
+          <ChevronRight style={{ width: '14px', height: '14px' }} />
+          <span className="text-[#e8e4df] font-medium truncate">{post.title}</span>
         </nav>
       </div>
 
       {/* Article */}
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <article className="max-w-4xl mx-auto" style={{ padding: '2rem 2rem 3rem' }}>
         {/* Header */}
-        <header className="mb-10">
-          <div className="flex items-center gap-2 mb-5">
-            <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400">
+        <header style={{ marginBottom: '2.5rem' }}>
+          <div className="flex items-center" style={{ gap: '8px', marginBottom: '20px' }}>
+            <span
+              className="text-xs font-medium rounded-full bg-emerald-500/10 text-emerald-400"
+              style={{ padding: '4px 12px' }}
+            >
               {post.category}
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-white mb-5 leading-[1.15]">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#f0ece8] leading-[1.15]" style={{ marginBottom: '20px' }}>
             {post.title}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-500 dark:text-zinc-400">
-            <div className="flex items-center gap-1.5">
-              <User className="w-3.5 h-3.5" />
+          <div className="flex flex-wrap items-center text-sm text-[#6a6560]" style={{ gap: '16px' }}>
+            <div className="flex items-center" style={{ gap: '6px' }}>
+              <User style={{ width: '14px', height: '14px' }} />
               {post.author}
             </div>
-            <div className="flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5" />
+            <div className="flex items-center" style={{ gap: '6px' }}>
+              <Calendar style={{ width: '14px', height: '14px' }} />
               {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
             </div>
-            <div className="flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5" />
+            <div className="flex items-center" style={{ gap: '6px' }}>
+              <Clock style={{ width: '14px', height: '14px' }} />
               {post.readTime} read
             </div>
           </div>
@@ -209,27 +212,30 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
         {/* Related tool CTA */}
         {tool && (
-          <div className="mt-12 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-6 sm:p-8">
-            <div className="flex items-start gap-4">
+          <div
+            className="rounded-2xl border border-[#232323] bg-[#191919]"
+            style={{ marginTop: '3rem', padding: '24px 28px' }}
+          >
+            <div className="flex items-start" style={{ gap: '16px' }}>
               {Icon && (
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${tool.color}15` }}>
-                  <Icon className="w-6 h-6" style={{ color: tool.color }} />
+                <div className="rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${tool.color}15`, width: '48px', height: '48px' }}>
+                  <Icon style={{ width: '24px', height: '24px', color: tool.color }} />
                 </div>
               )}
               <div className="flex-1">
-                <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-1">
+                <h3 className="text-lg font-bold text-[#f0ece8]" style={{ marginBottom: '4px' }}>
                   Try the {tool.name}
                 </h3>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
+                <p className="text-sm text-[#7a756f]" style={{ marginBottom: '16px' }}>
                   {tool.tagline}
                 </p>
                 <Link
                   href={`/tools/${tool.slug}`}
-                  className="inline-flex items-center gap-1.5 text-sm font-medium transition-colors"
-                  style={{ color: tool.color }}
+                  className="inline-flex items-center text-sm font-medium transition-colors"
+                  style={{ color: tool.color, gap: '6px' }}
                 >
                   Open tool
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight style={{ width: '16px', height: '16px' }} />
                 </Link>
               </div>
             </div>
@@ -237,25 +243,29 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         )}
 
         {/* Tags */}
-        <div className="mt-8 flex flex-wrap gap-2">
+        <div className="flex flex-wrap" style={{ marginTop: '2rem', gap: '8px' }}>
           {post.tags.map(tag => (
-            <span key={tag} className="text-xs px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400">
+            <span
+              key={tag}
+              className="text-xs rounded-full bg-[#1e1e1e] text-[#6a6560]"
+              style={{ padding: '4px 12px' }}
+            >
               {tag}
             </span>
           ))}
         </div>
 
         {/* Navigation */}
-        <div className="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800 flex justify-between">
-          <Link href="/blog" className="flex items-center gap-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
-            <ArrowLeft className="w-4 h-4" />
+        <div className="border-t border-[#1e1e1e] flex justify-between" style={{ marginTop: '3rem', paddingTop: '2rem' }}>
+          <Link href="/blog" className="flex items-center text-sm font-medium text-[#6a6560] hover:text-[#e8e4df] transition-colors" style={{ gap: '6px' }}>
+            <ArrowLeft style={{ width: '16px', height: '16px' }} />
             All articles
           </Link>
         </div>
       </article>
 
       {/* Newsletter */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <section className="max-w-4xl mx-auto" style={{ padding: '0 2rem 3.5rem' }}>
         <NewsletterSignup />
       </section>
     </>

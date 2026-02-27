@@ -62,8 +62,8 @@ export function Navbar() {
 
         {/* Mobile nav */}
         {mobileOpen && (
-          <div className="md:hidden pb-6 border-t border-[#1e1e1e] mt-2 pt-4">
-            <div className="flex flex-col gap-1">
+          <div className="md:hidden border-t border-[#1e1e1e]" style={{ paddingBottom: '24px', marginTop: '8px', paddingTop: '16px' }}>
+            <div className="flex flex-col" style={{ gap: '4px' }}>
               {navLinks.map(link => {
                 const isActive = link.href === '/'
                   ? pathname === '/'
@@ -73,11 +73,12 @@ export function Navbar() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className={`px-4 py-3 text-sm rounded-xl transition-colors ${
+                    className={`text-sm rounded-xl transition-colors ${
                       isActive
                         ? 'text-[#e8e4df] bg-[#1c1c1c]'
                         : 'text-[#8a8580] hover:text-[#e8e4df] hover:bg-[#1c1c1c]'
                     }`}
+                    style={{ padding: '12px 16px' }}
                   >
                     {link.label}
                   </Link>

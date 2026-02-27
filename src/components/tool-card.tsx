@@ -18,7 +18,7 @@ export function ToolCard({ tool, variant = 'dark' }: { tool: Tool; variant?: 'da
     <Link href={`/tools/${tool.slug}`} className="group block h-full">
       <div
         className={`relative overflow-hidden rounded-2xl border h-full flex flex-col transition-all duration-500 ease-out
-          group-hover:-translate-y-2 group-hover:shadow-2xl
+          group-hover:-translate-y-1.5 group-hover:shadow-2xl
           ${isDark
             ? 'border-[#232323] bg-[#191919] group-hover:border-[#383838] group-hover:shadow-black/40'
             : 'border-[#d4d0cb] bg-white group-hover:border-[#b0aca8] group-hover:shadow-black/8'
@@ -30,45 +30,56 @@ export function ToolCard({ tool, variant = 'dark' }: { tool: Tool; variant?: 'da
           style={{ backgroundColor: tool.color }}
         />
 
-        <div className="p-5 flex flex-col flex-1">
+        <div className="flex flex-col flex-1" style={{ padding: '24px 24px 22px' }}>
           {/* Icon with colored background */}
           <div
-            className="mb-6 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+            className="rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
             style={{
-              backgroundColor: `${tool.color}15`,
+              backgroundColor: `${tool.color}12`,
+              width: '44px',
+              height: '44px',
+              marginBottom: '20px',
             }}
           >
             <Icon
-              className="w-5.5 h-5.5 transition-colors duration-300"
-              style={{ color: tool.color }}
+              style={{ color: tool.color, width: '20px', height: '20px' }}
               strokeWidth={1.75}
             />
           </div>
 
           {/* Title */}
-          <h3 className={`text-base font-semibold mb-2.5 leading-snug transition-colors duration-200 ${
-            isDark
-              ? 'text-[#f0ece8] group-hover:text-white'
-              : 'text-[#141414]'
-          }`}>
+          <h3
+            className={`font-semibold leading-snug transition-colors duration-200 ${
+              isDark
+                ? 'text-[#f0ece8] group-hover:text-white'
+                : 'text-[#141414]'
+            }`}
+            style={{ fontSize: '15px', marginBottom: '8px' }}
+          >
             {tool.name}
           </h3>
 
           {/* Description */}
-          <p className={`text-[13px] leading-relaxed line-clamp-2 mb-8 flex-1 ${
-            isDark ? 'text-[#7a756f]' : 'text-[#6a6560]'
-          }`}>
+          <p
+            className={`leading-relaxed line-clamp-2 flex-1 ${
+              isDark ? 'text-[#7a756f]' : 'text-[#6a6560]'
+            }`}
+            style={{ fontSize: '13px', marginBottom: '24px' }}
+          >
             {tool.tagline}
           </p>
 
           {/* CTA */}
-          <div className={`flex items-center gap-2 text-[13px] font-medium transition-all duration-300 ${
-            isDark
-              ? 'text-[#5a5550] group-hover:text-[#e8e4df]'
-              : 'text-[#8a8580] group-hover:text-[#141414]'
-          }`}>
+          <div
+            className={`flex items-center font-medium transition-all duration-300 ${
+              isDark
+                ? 'text-[#5a5550] group-hover:text-[#e8e4df]'
+                : 'text-[#8a8580] group-hover:text-[#141414]'
+            }`}
+            style={{ fontSize: '13px', gap: '6px' }}
+          >
             <span>Open tool</span>
-            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1.5" />
+            <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1.5" style={{ width: '14px', height: '14px' }} />
           </div>
         </div>
       </div>
