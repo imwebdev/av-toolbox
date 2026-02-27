@@ -3,7 +3,7 @@ import { getAllBlogPosts } from '@/lib/blog-data';
 import { ToolCard } from '@/components/tool-card';
 import { NewsletterSignup } from '@/components/newsletter-signup';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Zap, Shield, Globe } from 'lucide-react';
 
 export default function Home() {
   const categoryKeys = Object.keys(categories) as (keyof typeof categories)[];
@@ -30,21 +30,48 @@ export default function Home() {
         }}
       />
 
-      {/* Hero — 500designs-inspired: massive type, generous whitespace */}
-      <section className="section-container pt-32 sm:pt-44 lg:pt-52 pb-28 sm:pb-36 lg:pb-44">
-        <p className="text-sm text-[#8a8580] mb-8 tracking-wide font-light">
-          / {tools.length} free tools
-        </p>
+      {/* Hero */}
+      <section className="relative overflow-hidden">
+        {/* Subtle gradient backdrop */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a1a] via-[#141414] to-[#141414]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-gradient-to-b from-blue-500/[0.03] via-purple-500/[0.02] to-transparent rounded-full blur-3xl" />
 
-        <h1 className="text-[2.75rem] sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-extralight text-[#e8e4df] leading-[1.05] tracking-[-0.02em] max-w-5xl">
-          Production-grade tools
-          <br />
-          <span className="text-[#8a8580]">for AV professionals.</span>
-        </h1>
+        <div className="relative section-container pt-28 sm:pt-36 lg:pt-44 pb-20 sm:pb-28 lg:pb-36">
+          <div className="flex items-center gap-2 mb-8">
+            <div className="h-px w-8 bg-gradient-to-r from-blue-500 to-purple-500" />
+            <span className="text-xs text-[#8a8580] tracking-widest uppercase font-medium">
+              {tools.length} free tools
+            </span>
+          </div>
 
-        <p className="text-base sm:text-lg text-[#6a6560] leading-relaxed max-w-lg mt-10">
-          Free calculators and utilities for live streaming, broadcast, and audio-visual engineering. No signup required.
-        </p>
+          <h1 className="text-[2.5rem] sm:text-5xl lg:text-[4.5rem] xl:text-[5.5rem] font-bold text-[#f0ece8] leading-[1.08] tracking-[-0.03em] max-w-4xl">
+            Production-grade tools
+            <br />
+            <span className="bg-gradient-to-r from-[#8a8580] to-[#6a6560] bg-clip-text text-transparent">
+              for AV professionals.
+            </span>
+          </h1>
+
+          <p className="text-base sm:text-lg text-[#7a756f] leading-relaxed max-w-lg mt-8">
+            Free calculators and utilities for live streaming, broadcast, and audio-visual engineering. No signup required.
+          </p>
+
+          {/* Quick stats */}
+          <div className="flex items-center gap-8 mt-12">
+            <div className="flex items-center gap-2.5">
+              <Zap className="w-4 h-4 text-amber-500" />
+              <span className="text-sm text-[#8a8580]">Instant results</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <Shield className="w-4 h-4 text-emerald-500" />
+              <span className="text-sm text-[#8a8580]">No data collected</span>
+            </div>
+            <div className="flex items-center gap-2.5 hidden sm:flex">
+              <Globe className="w-4 h-4 text-blue-500" />
+              <span className="text-sm text-[#8a8580]">Works offline</span>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Tool Categories */}
@@ -52,22 +79,42 @@ export default function Home() {
         const catTools = tools.filter(t => t.category === category);
         const catInfo = categories[category];
         const isLight = idx % 2 === 1;
+
         return (
           <section
             key={category}
-            className={isLight ? 'bg-[#e8e4df]' : ''}
+            className={isLight ? 'bg-[#f0ece8]' : ''}
           >
-            <div className="section-container py-24 sm:py-32 lg:py-40">
-              <div className="mb-14 sm:mb-16">
-                <p className={`text-[11px] uppercase tracking-[0.25em] mb-4 font-medium ${isLight ? 'text-[#9a9590]' : 'text-[#5a5550]'}`}>
-                  {catInfo.label}
-                </p>
-                <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-extralight tracking-tight leading-tight ${isLight ? 'text-[#141414]' : 'text-[#e8e4df]'}`}>
-                  {catInfo.description}
-                </h2>
+            <div className="section-container py-20 sm:py-24 lg:py-32">
+              <div className="flex items-end justify-between mb-10 sm:mb-14">
+                <div>
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <div
+                      className="w-1.5 h-1.5 rounded-full"
+                      style={{
+                        backgroundColor: catTools[0]?.color || '#8a8580',
+                      }}
+                    />
+                    <p className={`text-[11px] uppercase tracking-[0.2em] font-semibold ${
+                      isLight ? 'text-[#9a9590]' : 'text-[#5a5550]'
+                    }`}>
+                      {catInfo.label}
+                    </p>
+                  </div>
+                  <h2 className={`text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight leading-tight ${
+                    isLight ? 'text-[#1a1a1a]' : 'text-[#f0ece8]'
+                  }`}>
+                    {catInfo.description}
+                  </h2>
+                </div>
+                <span className={`hidden sm:block text-sm tabular-nums ${
+                  isLight ? 'text-[#b0aca8]' : 'text-[#3a3a3a]'
+                }`}>
+                  {catTools.length} tool{catTools.length !== 1 ? 's' : ''}
+                </span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                 {catTools.map(tool => (
                   <ToolCard key={tool.slug} tool={tool} variant={isLight ? 'light' : 'dark'} />
                 ))}
@@ -78,60 +125,68 @@ export default function Home() {
       })}
 
       {/* Newsletter */}
-      <section className="section-container py-24 sm:py-32 lg:py-40">
+      <section className="section-container py-20 sm:py-24 lg:py-32">
         <NewsletterSignup />
       </section>
 
       {/* Recent Articles */}
-      <section className="bg-[#1a1a1a]">
-        <div className="section-container py-24 sm:py-32 lg:py-40">
-          <div className="flex items-end justify-between mb-14 sm:mb-16">
+      <section className="bg-[#191919]">
+        <div className="section-container py-20 sm:py-24 lg:py-32">
+          <div className="flex items-end justify-between mb-10 sm:mb-14">
             <div>
-              <p className="text-[11px] uppercase tracking-[0.25em] text-[#5a5550] mb-4 font-medium">
-                Resources
-              </p>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extralight tracking-tight text-[#e8e4df]">
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <p className="text-[11px] uppercase tracking-[0.2em] text-[#5a5550] font-semibold">
+                  Resources
+                </p>
+              </div>
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight text-[#f0ece8]">
                 Guides and deep-dives for AV professionals
               </h2>
             </div>
             <Link
               href="/blog"
-              className="hidden sm:flex items-center gap-2 text-sm text-[#8a8580] hover:text-[#e8e4df] transition-colors duration-200"
+              className="hidden sm:flex items-center gap-2 text-sm text-[#5a5550] hover:text-[#e8e4df] transition-colors duration-200"
             >
               View all
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {recentPosts.map(post => (
               <Link key={post.slug} href={`/blog/${post.slug}`} className="group block h-full">
-                <article className="rounded-2xl border border-[#282828] bg-[#141414] p-8 sm:p-10 transition-all duration-300 ease-out group-hover:-translate-y-1.5 group-hover:shadow-2xl group-hover:shadow-black/30 group-hover:border-[#444] group-hover:bg-[#171717] h-full flex flex-col">
-                  <div className="flex items-center gap-3 mb-6">
-                    <span className="text-[11px] text-[#5a5550] uppercase tracking-[0.2em] font-medium">
-                      {post.category}
-                    </span>
-                    <span className="text-[#2a2a2a]">&middot;</span>
-                    <span className="text-[11px] text-[#5a5550]">
-                      {post.readTime} read
-                    </span>
-                  </div>
-                  <h3 className="text-base font-medium text-[#e8e4df] mb-3 leading-snug group-hover:text-white transition-colors duration-200">
-                    {post.title}
-                  </h3>
-                  <p className="text-sm text-[#6a6560] leading-relaxed flex-1 line-clamp-2">
-                    {post.excerpt}
-                  </p>
-                  <div className="flex items-center gap-2 mt-8 text-sm font-medium text-[#5a5550] group-hover:text-[#e8e4df] transition-all duration-200">
-                    <span>Read more</span>
-                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+                <article className="relative overflow-hidden rounded-2xl border border-[#232323] bg-[#141414] transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-black/40 group-hover:border-[#383838] h-full flex flex-col">
+                  {/* Color accent */}
+                  <div className="h-1 w-full bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-500 group-hover:h-1.5" />
+
+                  <div className="p-6 sm:p-7 flex flex-col flex-1">
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="text-[11px] text-[#5a5550] uppercase tracking-[0.15em] font-semibold">
+                        {post.category}
+                      </span>
+                      <span className="text-[#2a2a2a]">&middot;</span>
+                      <span className="text-[11px] text-[#4a4540]">
+                        {post.readTime} read
+                      </span>
+                    </div>
+                    <h3 className="text-[15px] font-semibold text-[#f0ece8] mb-2.5 leading-snug group-hover:text-white transition-colors duration-200">
+                      {post.title}
+                    </h3>
+                    <p className="text-[13px] text-[#7a756f] leading-relaxed flex-1 line-clamp-2">
+                      {post.excerpt}
+                    </p>
+                    <div className="flex items-center gap-2 mt-6 text-[13px] font-medium text-[#5a5550] group-hover:text-[#e8e4df] transition-all duration-300">
+                      <span>Read more</span>
+                      <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1.5" />
+                    </div>
                   </div>
                 </article>
               </Link>
             ))}
           </div>
 
-          <div className="sm:hidden mt-10 text-center">
+          <div className="sm:hidden mt-8 text-center">
             <Link
               href="/blog"
               className="inline-flex items-center gap-2 text-sm text-[#8a8580]"
@@ -144,15 +199,18 @@ export default function Home() {
       </section>
 
       {/* SEO Content */}
-      <section className="section-container py-24 sm:py-32 lg:py-40">
+      <section className="section-container py-20 sm:py-24 lg:py-32">
         <div className="max-w-2xl">
-          <p className="text-[11px] uppercase tracking-[0.25em] text-[#5a5550] mb-4 font-medium">
-            About
-          </p>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extralight tracking-tight text-[#e8e4df] mb-10">
+          <div className="flex items-center gap-2.5 mb-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#5a5550]" />
+            <p className="text-[11px] uppercase tracking-[0.2em] text-[#5a5550] font-semibold">
+              About
+            </p>
+          </div>
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight text-[#f0ece8] mb-8">
             Why AV Toolbox?
           </h2>
-          <div className="space-y-6 text-sm text-[#8a8580] leading-[1.9]">
+          <div className="space-y-5 text-sm text-[#8a8580] leading-[1.85]">
             <p>
               AV Toolbox provides free, production-grade calculators and utilities built specifically for live streaming, broadcast, and audio-visual professionals. Every tool is designed to solve real problems that engineers face daily.
             </p>
