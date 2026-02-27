@@ -17,30 +17,33 @@ export function ToolCard({ tool, variant = 'dark' }: { tool: Tool; variant?: 'da
   return (
     <Link href={`/tools/${tool.slug}`} className="group block">
       <div
-        className={`rounded-xl border p-5 sm:p-6 transition-all duration-300 h-full flex flex-col ${
+        className={`rounded-2xl border p-7 sm:p-8 transition-all duration-300 h-full flex flex-col ${
           isDark
-            ? 'border-[#2a2a2a] bg-[#1c1c1c] hover:border-[#3a3a3a] hover:bg-[#202020]'
-            : 'border-[#d4d0cb] bg-white hover:border-[#b8b4af] hover:bg-[#f8f6f3]'
+            ? 'border-[#282828] bg-[#1a1a1a] hover:border-[#383838] hover:bg-[#1e1e1e]'
+            : 'border-[#d4d0cb] bg-white hover:border-[#b8b4af] hover:shadow-sm'
         }`}
       >
-        {/* Icon + Category */}
-        <div className="flex items-start justify-between mb-5">
+        {/* Icon */}
+        <div className="mb-6">
           <Icon
             className="w-5 h-5"
-            style={{ color: isDark ? '#8a8580' : '#5a5550' }}
+            style={{ color: isDark ? '#6a6560' : '#5a5550' }}
+            strokeWidth={1.5}
           />
-          <span className={`text-xs tracking-wider uppercase ${isDark ? 'text-[#5a5550]' : 'text-[#8a8580]'}`}>
-            {tool.categoryLabel}
-          </span>
         </div>
 
+        {/* Category */}
+        <span className={`text-[11px] tracking-[0.2em] uppercase font-medium mb-3 block ${isDark ? 'text-[#4a4540]' : 'text-[#9a9590]'}`}>
+          {tool.categoryLabel}
+        </span>
+
         {/* Title */}
-        <h3 className={`text-base font-medium mb-2 ${isDark ? 'text-[#e8e4df]' : 'text-[#141414]'}`}>
+        <h3 className={`text-[15px] font-medium mb-3 leading-snug ${isDark ? 'text-[#e8e4df]' : 'text-[#141414]'}`}>
           {tool.name}
         </h3>
 
         {/* Description */}
-        <p className={`text-sm leading-relaxed line-clamp-2 mb-5 flex-1 ${isDark ? 'text-[#8a8580]' : 'text-[#5a5550]'}`}>
+        <p className={`text-sm leading-relaxed line-clamp-2 mb-6 flex-1 ${isDark ? 'text-[#6a6560]' : 'text-[#6a6560]'}`}>
           {tool.tagline}
         </p>
 

@@ -15,15 +15,15 @@ export function NewsletterSignup() {
   };
 
   return (
-    <div className="rounded-xl border border-[#2a2a2a] bg-[#1c1c1c] p-6 sm:p-10">
+    <div className="rounded-2xl border border-[#282828] bg-[#1a1a1a] p-8 sm:p-12 lg:p-14">
       <div className="max-w-xl">
-        <p className="text-xs uppercase tracking-[0.2em] text-[#5a5550] mb-3">
+        <p className="text-[11px] uppercase tracking-[0.25em] text-[#5a5550] mb-4 font-medium">
           Newsletter
         </p>
-        <h2 className="text-xl sm:text-2xl font-light text-[#e8e4df] mb-3 tracking-tight">
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-extralight text-[#e8e4df] mb-4 tracking-tight">
           Stay ahead in AV production
         </h2>
-        <p className="text-sm text-[#8a8580] leading-relaxed mb-6">
+        <p className="text-sm text-[#6a6560] leading-relaxed mb-8">
           Weekly tips, tool updates, and deep-dive guides on streaming, broadcast, and AV engineering.
         </p>
 
@@ -42,11 +42,11 @@ export function NewsletterSignup() {
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
-              className="flex-1 px-4 py-2.5 rounded-lg bg-[#141414] border border-[#2a2a2a] text-[#e8e4df] placeholder-[#5a5550] focus:outline-none focus:border-[#8a8580] text-sm transition-colors"
+              className="flex-1 px-5 py-3 rounded-xl bg-[#141414] border border-[#282828] text-[#e8e4df] placeholder-[#4a4540] focus:outline-none focus:border-[#5a5550] text-sm transition-colors"
             />
             <button
               type="submit"
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-[#e8e4df] hover:bg-[#d4d0cb] text-[#141414] text-sm font-medium transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#e8e4df] hover:bg-white text-[#141414] text-sm font-medium transition-colors"
             >
               Subscribe
               <ArrowRight className="w-3.5 h-3.5" />

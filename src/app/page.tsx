@@ -30,17 +30,19 @@ export default function Home() {
         }}
       />
 
-      {/* Hero */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-10 pt-24 sm:pt-36 pb-24 sm:pb-32">
-        <p className="text-sm text-[#8a8580] mb-6 tracking-wide">
+      {/* Hero — 500designs-inspired: massive type, generous whitespace */}
+      <section className="section-container pt-32 sm:pt-44 lg:pt-52 pb-28 sm:pb-36 lg:pb-44">
+        <p className="text-sm text-[#8a8580] mb-8 tracking-wide font-light">
           / {tools.length} free tools
         </p>
 
-        <h1 className="text-4xl sm:text-5xl lg:text-7xl font-light text-[#e8e4df] leading-[1.1] tracking-tight max-w-4xl mb-8">
-          Production-grade tools for AV professionals.
+        <h1 className="text-[2.75rem] sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-extralight text-[#e8e4df] leading-[1.05] tracking-[-0.02em] max-w-5xl">
+          Production-grade tools
+          <br />
+          <span className="text-[#8a8580]">for AV professionals.</span>
         </h1>
 
-        <p className="text-base sm:text-lg text-[#8a8580] leading-relaxed max-w-xl">
+        <p className="text-base sm:text-lg text-[#6a6560] leading-relaxed max-w-lg mt-10">
           Free calculators and utilities for live streaming, broadcast, and audio-visual engineering. No signup required.
         </p>
       </section>
@@ -53,21 +55,19 @@ export default function Home() {
         return (
           <section
             key={category}
-            className={`${isLight ? 'bg-[#e8e4df]' : ''}`}
+            className={isLight ? 'bg-[#e8e4df]' : ''}
           >
-            <div className="max-w-7xl mx-auto px-6 lg:px-10 py-20 sm:py-28">
-              <div className="flex items-end justify-between mb-12">
-                <div>
-                  <p className={`text-xs uppercase tracking-[0.2em] mb-3 ${isLight ? 'text-[#8a8580]' : 'text-[#5a5550]'}`}>
-                    {catInfo.label}
-                  </p>
-                  <h2 className={`text-2xl sm:text-3xl font-light tracking-tight ${isLight ? 'text-[#141414]' : 'text-[#e8e4df]'}`}>
-                    {catInfo.description}
-                  </h2>
-                </div>
+            <div className="section-container py-24 sm:py-32 lg:py-40">
+              <div className="mb-14 sm:mb-16">
+                <p className={`text-[11px] uppercase tracking-[0.25em] mb-4 font-medium ${isLight ? 'text-[#9a9590]' : 'text-[#5a5550]'}`}>
+                  {catInfo.label}
+                </p>
+                <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-extralight tracking-tight leading-tight ${isLight ? 'text-[#141414]' : 'text-[#e8e4df]'}`}>
+                  {catInfo.description}
+                </h2>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
                 {catTools.map(tool => (
                   <ToolCard key={tool.slug} tool={tool} variant={isLight ? 'light' : 'dark'} />
                 ))}
@@ -78,19 +78,19 @@ export default function Home() {
       })}
 
       {/* Newsletter */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-10 py-20 sm:py-28">
+      <section className="section-container py-24 sm:py-32 lg:py-40">
         <NewsletterSignup />
       </section>
 
       {/* Recent Articles */}
-      <section className="bg-[#1c1c1c]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-20 sm:py-28">
-          <div className="flex items-end justify-between mb-12">
+      <section className="bg-[#1a1a1a]">
+        <div className="section-container py-24 sm:py-32 lg:py-40">
+          <div className="flex items-end justify-between mb-14 sm:mb-16">
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-[#5a5550] mb-3">
+              <p className="text-[11px] uppercase tracking-[0.25em] text-[#5a5550] mb-4 font-medium">
                 Resources
               </p>
-              <h2 className="text-2xl sm:text-3xl font-light tracking-tight text-[#e8e4df]">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extralight tracking-tight text-[#e8e4df]">
                 Guides and deep-dives for AV professionals
               </h2>
             </div>
@@ -103,26 +103,26 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
             {recentPosts.map(post => (
               <Link key={post.slug} href={`/blog/${post.slug}`} className="group block">
-                <article className="rounded-xl border border-[#2a2a2a] bg-[#141414] p-6 sm:p-7 transition-all duration-300 hover:border-[#3a3a3a] hover:bg-[#181818] h-full flex flex-col">
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="text-xs text-[#5a5550] uppercase tracking-wider">
+                <article className="rounded-2xl border border-[#282828] bg-[#141414] p-7 sm:p-8 transition-all duration-300 hover:border-[#383838] hover:bg-[#171717] h-full flex flex-col">
+                  <div className="flex items-center gap-3 mb-5">
+                    <span className="text-[11px] text-[#5a5550] uppercase tracking-[0.2em] font-medium">
                       {post.category}
                     </span>
                     <span className="text-[#2a2a2a]">&middot;</span>
-                    <span className="text-xs text-[#5a5550]">
+                    <span className="text-[11px] text-[#5a5550]">
                       {post.readTime} read
                     </span>
                   </div>
-                  <h3 className="text-base font-medium text-[#e8e4df] mb-3 group-hover:text-white transition-colors duration-200">
+                  <h3 className="text-[15px] font-medium text-[#e8e4df] mb-3 leading-snug group-hover:text-white transition-colors duration-200">
                     {post.title}
                   </h3>
-                  <p className="text-sm text-[#8a8580] leading-relaxed flex-1 line-clamp-2">
+                  <p className="text-sm text-[#6a6560] leading-relaxed flex-1 line-clamp-2">
                     {post.excerpt}
                   </p>
-                  <div className="flex items-center gap-2 mt-5 text-sm text-[#5a5550] group-hover:text-[#8a8580] transition-colors duration-200">
+                  <div className="flex items-center gap-2 mt-6 text-sm text-[#5a5550] group-hover:text-[#8a8580] transition-colors duration-200">
                     <span>Read more</span>
                     <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                   </div>
@@ -131,7 +131,7 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="sm:hidden mt-8 text-center">
+          <div className="sm:hidden mt-10 text-center">
             <Link
               href="/blog"
               className="inline-flex items-center gap-2 text-sm text-[#8a8580]"
@@ -144,15 +144,15 @@ export default function Home() {
       </section>
 
       {/* SEO Content */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-10 py-20 sm:py-28">
+      <section className="section-container py-24 sm:py-32 lg:py-40">
         <div className="max-w-2xl">
-          <p className="text-xs uppercase tracking-[0.2em] text-[#5a5550] mb-3">
+          <p className="text-[11px] uppercase tracking-[0.25em] text-[#5a5550] mb-4 font-medium">
             About
           </p>
-          <h2 className="text-2xl sm:text-3xl font-light tracking-tight text-[#e8e4df] mb-8">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extralight tracking-tight text-[#e8e4df] mb-10">
             Why AV Toolbox?
           </h2>
-          <div className="space-y-5 text-sm text-[#8a8580] leading-[1.8]">
+          <div className="space-y-6 text-sm text-[#8a8580] leading-[1.9]">
             <p>
               AV Toolbox provides free, production-grade calculators and utilities built specifically for live streaming, broadcast, and audio-visual professionals. Every tool is designed to solve real problems that engineers face daily.
             </p>
